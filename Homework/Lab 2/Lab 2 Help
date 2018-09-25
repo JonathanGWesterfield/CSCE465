@@ -22,6 +22,7 @@ exit
 // debug version
 gcc stack.c -o stack_gdb -g -z execstack -fno-stack-protector
 
+// gdb commands
 b bof
 r
 p &buffer
