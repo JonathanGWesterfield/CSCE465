@@ -11,7 +11,9 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="1b7b4c4a-fee2-4936-8551-a9dbc29c402a" name="Default Changelist" comment="" />
+    <list default="true" id="1b7b4c4a-fee2-4936-8551-a9dbc29c402a" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -46,39 +48,39 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="c" value="6" />
+          <entry key="c" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="ObjectiveC" value="6" />
+          <entry key="ObjectiveC" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="c" value="1649" />
+          <entry key="c" value="2589" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="1649" />
+          <entry key="ObjectiveC" value="2589" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="true" current-in-tab="true">
-        <entry file="remoteDeploymentFS://&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/exploit.c">
+      <file pinned="true" current-in-tab="false">
+        <entry file="remoteDeploymentFS://&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/exploit.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="360">
-              <caret line="24" selection-start-line="24" selection-end-line="24" />
+            <state relative-caret-position="829">
+              <caret line="92" column="15" lean-forward="true" selection-start-line="92" selection-start-column="15" selection-end-line="92" selection-end-column="15" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="true" current-in-tab="false">
-        <entry file="remoteDeploymentFS://&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/stack.c">
+      <file pinned="true" current-in-tab="true">
+        <entry file="remoteDeploymentFS://&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/stack.c">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="390">
               <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
@@ -87,15 +89,20 @@
         </entry>
       </file>
       <file pinned="true" current-in-tab="false">
-        <entry file="remoteDeploymentFS://&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/call_shellcode.c">
+        <entry file="remoteDeploymentFS://&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/call_shellcode.c">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret selection-end-line="26" selection-end-column="1" />
+            <state relative-caret-position="420">
+              <caret line="28" column="1" lean-forward="true" selection-start-line="28" selection-start-column="1" selection-end-line="28" selection-end-column="1" />
             </state>
           </provider>
         </entry>
       </file>
     </leaf>
+  </component>
+  <component name="FindInProjectRecents">
+    <findStrings>
+      <find>get_</find>
+    </findStrings>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../../.." />
@@ -103,9 +110,12 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/call_shellcode.c" />
         <option value="&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/stack.c" />
+        <option value="&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/call_shellcode.c" />
         <option value="&lt;f2f8d285-ca6c-4d4f-964d-d5406be371e6&gt;/lab2/exploit.c" />
+        <option value="&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/exploit.c" />
+        <option value="&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/call_shellcode.c" />
+        <option value="&lt;199ecc99-c61c-4c30-b206-9109da96dc0f&gt;/Lab2/stack.c" />
       </list>
     </option>
   </component>
@@ -187,12 +197,12 @@
       <updated>1537843162273</updated>
       <workItem from="1537843164409" duration="1593000" />
       <workItem from="1537844920906" duration="1179000" />
-      <workItem from="1537846119974" duration="4019000" />
+      <workItem from="1537846119974" duration="7222000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6791000" />
+    <option name="totallyTimeSpent" value="9994000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1920" y="-681" width="1080" height="1898" extended-state="6" />
@@ -209,16 +219,16 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" order="8" visible="true" weight="0.22148395" />
+      <window_info anchor="bottom" id="File Transfer" order="8" weight="0.22148395" />
       <window_info anchor="bottom" id="Database Changes" order="9" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="10" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="10" visible="true" weight="0.32945737" />
       <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
       <window_info anchor="bottom" id="CMake" order="12" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" weight="0.32947975" />
-      <window_info active="true" anchor="right" id="Remote Host" order="4" visible="true" weight="0.16570328" />
+      <window_info anchor="right" id="Remote Host" order="4" visible="true" weight="0.16570328" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
