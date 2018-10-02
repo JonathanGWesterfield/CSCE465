@@ -1,0 +1,61 @@
+<html><head><title>20.1. Distribution Lists</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch20.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch20lev1sec2.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a>Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch20lev1sec1"></a>
+<h3 id="title-IDANWYRI" class="docSection1Title">20.1. Distribution Lists</h3>
+<p class="docText">Electronic mail allows a user to send a message to one or more recipients. The simplest form of electronic mail message is where Alice sends a message to Bob.</p>
+<a name="ch20list01"></a><h5 id="title-IDA1WYRI" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">To: Bob</span>
+<span class="docEmphStrong">From: Alice</span>
+
+<span class="docEmphStrong">Care to meet me in my apartment tonight?</span></pre><br />
+</td></tr></table></p>
+<p class="docText">Usually, a mail system allows a message to be sent to multiple recipients, for example:</p>
+<p class="docText"></p><a name="ch20list02"></a><h5 id="title-IDA2XYRI" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">To: Bob, Carol, Ted</span>
+<span class="docEmphStrong">From: Alice</span>
+
+<span class="docEmphStrong">Care to meet me in my apartment tonight?</span></pre><br />
+</td></tr></table></p>
+<p class="docText"><a name="iddle1288"></a><a name="iddle1567"></a><a name="iddle1905"></a>Sometimes it is impossible or inconvenient to list all recipients. For this reason, mail is often sent to a <span class="docEmphStrong">distribution list</span>, a name that stands for a set of recipients. For instance, a message might be sent to <span class="docEmphRomanAlt">Taxpayers</span>. There are two ways of implementing distribution lists.</p>
+<p class="docText">The first way involves sending the message to a site at which the list is maintained, and that site then sends a copy of the message to each recipient on the list. We'll call that the <span class="docEmphStrong">remote exploder method</span>.</p>
+<a name="ch20fig01"></a><p><center>
+<h5 class="docFigureTitle">Figure 20-1. Remote Exploder</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="500" height="171" src="20fig01.jpg" /></p>
+<br />
+<p class="docText">The second method is for the sender to retrieve the list from the site where it is kept, and then send a copy of the message to each recipient on the list. We'll call that the <span class="docEmphStrong">local exploder method</span><span class="docEmphasis">.</span></p>
+<a name="ch20fig02"></a><p><center>
+<h5 class="docFigureTitle">Figure 20-2. Local Exploder</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="500" height="171" src="20fig02.jpg" /></p>
+<br />
+<p class="docText">Sometimes a member of a distribution list can be another distribution list. For instance, the mailing list <span class="docEmphRomanAlt">Security Customers</span>, used to advertise security products, might include <span class="docEmphRomanAlt">law enforcers, bankers, Democratic National Committee, locksmiths,</span> and <span class="docEmphRomanAlt">members of organized <a name="iddle1491"></a>crime.</span> It is possible to construct a distribution list with an infinite loop. Suppose someone is maintaining a mailing list for cryptographers. Someone else is maintaining one for cryptanalysts. The cryptanalysts point out that they also want to hear the information sent to the cryptographers mailing list, so the distribution list <span class="docEmphRomanAlt">Cryptanalysts</span> is added to the <span class="docEmphRomanAlt">Cryptographers</span> mailing list. And for similar reasons <span class="docEmphRomanAlt">Cryptographers</span> is added to <span class="docEmphRomanAlt">Cryptanalysts</span>. The mail system must handle infinite loops in distribution lists in a reasonable manner, i.e., it must send each recipient at least one copy of each message but not an unreasonable number of copies of any. Loops like this effectively merge the mailing lists. (See <a class="docLink" href="ch20lev1sec17.html#ch20qa1q1">Homework Problem 1</a>.)</p>
+<p class="docText">As we described above, there are two methods of implementing distribution lists. The advantages of the local <span class="docEmphRoman"><a class="docLink" href="app02.html#gloss01_090">exploder</a></span> method are:</p>
+<ul><li><p class="docList">It is easier to prevent mail forwarding loops.</p></li><li><p class="docList">If there are multiple distribution lists, it is possible for the sender to prevent duplicate copies being sent to individuals on multiple lists.</p></li><li><p class="docList">If the network billing is usage-based as opposed to flat-fee, it is easier for the sender to know in advance just how much bandwidth will be consumed to transmit the message.</p></li></ul>
+<p class="docText">There are several advantages to the remote exploder method:</p>
+<ul><li><p class="docList">It allows you to send to a list whose membership you are not allowed to know. (<span class="docEmphasis">To U.S. spies living abroad from the IRS: friendly reminderÂthe tax deadline is April 15. Being caught or killed is not one of the grounds for automatic extension.</span>)</p></li><li><p class="docList">If distribution lists are organized geographically, you need only send one copy of a message over an expensive link to a remote area. (<span class="docEmphasis">To Citizens of France from the U.S. government: Thanks for the big statue.</span>)</p></li><li><p class="docList">When the distribution list is longer than the message, it is more efficient to send the message from the sender to the distribution list site than to send the distribution list to the sender. (<span class="docEmphasis">To people of planet earth: Greeting. Unless you stop transmitting reruns of the I Love Lucy show to us we will be forced to destroy your planet.</span>)</p></li><li><p class="docList">When distribution lists are included on distribution lists, it would be time-consuming to track down the whole tree to get to all the individuals. Instead, the message can be making progress as it is sent to the various exploders. Parallelism is exploited.</p></li></ul>
+<a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch20.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch20lev1sec2.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

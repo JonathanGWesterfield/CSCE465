@@ -1,0 +1,26 @@
+<html><head><title>9.4. Who Is Being Authenticated?</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch09lev1sec3.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch09lev1sec5.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch09lev1sec4"></a>
+<h3 id="title-IDAOUJYW" class="docSection1Title">9.4. Who Is Being Authenticated?</h3>
+<p class="docText">Suppose user Bob is at a workstation and wants to access his files at a file server. The purpose of the authentication exchange between the workstation and the file server is to prove Bob's identity. The file server generally does not care which workstation Bob is using.</p>
+<p class="docText">There are other times when a machine is acting autonomously. For instance, directory service replicas might coordinate updates among themselves and need to prove their identity to each other.</p>
+<p class="docText">Sometimes it might be important to authenticate both the user and the machine from which the user is communicating. For example, a bank teller might be authorized to do some transactions, but only from the terminal at the bank where that teller is employed.</p>
+<p class="docText">What's the difference between authenticating a human and authenticating a computer? A computer can store a high-quality secret, such as a long random-looking number, and it can do cryptographic operations. A workstation can do cryptographic operations on behalf of the user, but the system has to be designed so that all the person has to remember is a password. The password can be used to acquire a cryptographic key in various ways:</p>
+<ul><li><p class="docList">directly, as in doing a hash of the password</p></li><li><p class="docList">using the password to decrypt a higher-quality key, such as an RSA private key, that is stored in some place like a directory service</p></li></ul>
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch09lev1sec3.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch09lev1sec5.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

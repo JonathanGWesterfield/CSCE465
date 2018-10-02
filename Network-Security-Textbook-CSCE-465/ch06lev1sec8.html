@@ -1,0 +1,113 @@
+<html><head><title>6.8. Zero Knowledge Proof Systems</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"><a href="15051538.html"><img src="btn_next_.gif" width="1" height="1" alt="Next" border="0" /></a> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch06lev1sec7.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch06lev1sec9.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch06lev1sec8"></a>
+<h3 id="643999-994" class="docSection1Title">6.8. Zero Knowledge Proof Systems</h3>
+<p class="docText"><a name="iddle1371"></a><a name="iddle1405"></a><a name="iddle2143"></a>A zero knowledge proof system only does authentication. It allows you to prove that you know a secret (something associated with your public key) without actually revealing the secret. RSA is a zero knowledge proof system, in the sense that you can prove you know the secret associated with your public key without revealing your private key. However, there are zero knowledge proof systems with much higher performance than RSA, although they do not have the ability to do signatures or encryption.</p>
+<p class="docText">The classic example of a zero knowledge authentication scheme is based on graphs. A graph is a bunch of vertices connected by a bunch of edges. Typically, we name the vertices and specify the edges as pairs of vertices. We consider two graphs <span class="docEmphStrong">isomorphic</span> if we can rename the vertices of one to get a graph identical to the other. Nobody knows how to efficiently determine whether two arbitrary graphs are isomorphic. The assumption that this is hard forms the basis of the authentication scheme.</p>
+<p class="docText">Alice specifies a large graph (say 500 vertices). She renames the vertices to produce an isomorphic graph. Call the two graphs Graph A and Graph B. Alice knows the mapping that will transform Graph A into Graph B. Nobody else can compute it (in reasonable time). Her public key is the specification of the two graphs. Her private key is the mapping between the two graphs.</p>
+<p class="docText">To prove to Bob that she is Alice, she renames the vertices to find a new set of graphs, say <span class="docEmphasis">G</span><sub>1</sub>, <span class="docEmphasis">G</span><sub>2</sub>,...<span class="docEmphasis">G<sub>k</sub></span>, which she sends to Bob. Then Bob asks, for each <span class="docEmphasis">i</span>, for Alice to show him the mapping between <span class="docEmphasis">G<sub>i</sub></span> and one of Graph A or Graph B. Bob can choose which one, but he can't ask Alice to show both mappings for any <span class="docEmphasis">i</span> (or else Bob could piece the two mappings together to get a mapping from Graph A to Graph B). If Fred tries to impersonate Alice, he can make some graphs that are mapped from Graph A and some graphs that are mapped from Graph B, but he won't be able to find any graph for which he could show a map for both. So for each graph he sends to Bob, he will have only a 50% chance of successfully showing the requested mapping. For 30 graphs, the odds of Fred successfully impersonating Alice are only 1 in 2<sup>30</sup>, or one in ten billion.</p>
+<p class="docText">Why is this zero knowledge? After Alice proves herself to Bob, Bob knows some graphs with mappings to Graph A, and some with mappings to Graph B. He could have generated these himself, so Alice can't have given him any actual information.</p>
+<p class="docText">The graph-based authentication scheme is unfortunately too inefficient for practical use. The following authentication protocol, while not quite zero knowledge, is extremely efficient. It is a variant of Fiat-Shamir [<a class="docLink" href="biblio01.html#biblio01_057">FEIG87</a>].</p>
+<p class="docText">Alice establishes a public key consisting of &lt;<span class="docEmphasis">n</span>,<span class="docEmphasis">v</span>&gt;, where <span class="docEmphasis">n</span> is the product of two large primes (just like the <span class="docEmphasis">n</span> in RSA), and <span class="docEmphasis">v</span> is a number for which only Alice knows the square root mod <span class="docEmphasis">n</span>. Finding such an <span class="docEmphasis">n</span> is done just like in RSA. Finding <span class="docEmphasis">v</span> is really easy. Alice merely selects any random number <span class="docEmphasis">s</span> and squares it mod <span class="docEmphasis">n</span> to obtain <span class="docEmphasis">v</span>. After doing so, Alice can forget <span class="docEmphasis">n</span>'s factors and only remember <span class="docEmphasis">s</span> as her secret, and divulge &lt;<span class="docEmphasis">n</span>,<span class="docEmphasis">v</span>&gt; as her public key.</p>
+<p class="docText">To prove to Bob that she is Alice, she does the following:</p>
+<div style="font-weight:bold"><ol class="docList" type="1"><li><div style="font-weight:normal"><p class="docList">Alice chooses <span class="docEmphasis">k</span> random numbers, <span class="docEmphasis">r</span><sub>1</sub>, <span class="docEmphasis">r</span><sub>2</sub>,...<span class="docEmphasis">r<sub>k</sub></span>. For each <span class="docEmphasis">r<sub>i</sub></span>, she sends 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ mod <span class="docEmphasis">n</span> to Bob.</p></div></li><li><div style="font-weight:normal"><p class="docList">Bob chooses a random subset of the 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ and tells Alice which subset he has selected to be known as subset 1. The others will be known as subset 2.</p></div></li><li><div style="font-weight:normal"><p class="docList">Alice sends <span class="docEmphasis">sr<sub>i</sub></span> mod <span class="docEmphasis">n</span> for each 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ of subset 1, and sends <span class="docEmphasis">r<sub>i</sub></span> mod <span class="docEmphasis">n</span> for each 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ of subset 2.</p></div></li><li><div style="font-weight:normal"><p class="docList">Bob squares Alice's replies mod <span class="docEmphasis">n</span>. For those 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ in subset 1 he checks that the square of the reply is 
+
+<img border="0" alt="" id="118095013052" width="26" height="22" src="180equ02.jpg" />
+
+
+ mod <span class="docEmphasis">n</span>. For those 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ in subset 2 he checks that the square of the reply is 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ mod <span class="docEmphasis">n</span>.</p><p class="docList">Why does this work?</p></div></li></ol></div>
+<ul><li><p class="docList">Finding square roots mod <span class="docEmphasis">n</span> is at least as hard as factoring <span class="docEmphasis">n</span>. This means that if you knew an easy way to find square roots mod <span class="docEmphasis">n</span>, you'd be able to factor <span class="docEmphasis">n</span>. And we all hope that factoring is difficult.</p><a name="ch06sb01"></a><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="center" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="center" valign="top"><p class="docText">How to factor <span class="docEmphasis">n</span> if you can compute square roots mod <span class="docEmphasis">n</span></p></td></tr></table></p><br />
+<p class="docText">We'll assume <span class="docEmphasis">n</span> is odd and not the power of a prime. (If <span class="docEmphasis">n</span> is even, you can factor out all the factors of 2. If <span class="docEmphasis">n</span> is a power of a prime, you can try computing its <span class="docEmphasis">k</span><sup>th</sup> root using ordinary arithmetic, and you'll only need to try for <span class="docEmphasis">k</span> <img src="U2264.GIF" border="0" /> log<span class="docEmphasis"><sub>p</sub> n</span> where <span class="docEmphasis">p</span> is the smallest prime you're not willing to try dividing into <span class="docEmphasis">n</span> directly.)</p>
+<p class="docText">Assume you have a method to compute square roots mod <span class="docEmphasis">n</span>. You choose a random <span class="docEmphasis">x</span> and compute <span class="docEmphasis">s</span> = <span class="docEmphasis">x</span><sup>2</sup> mod <span class="docEmphasis">n</span>. Then you use your method of computing square roots mod <span class="docEmphasis">n</span> to compute the square root of <span class="docEmphasis">s</span> mod <span class="docEmphasis">n</span>, say <span class="docEmphasis">y</span>. This gives you two numbers, <span class="docEmphasis">x</span> and <span class="docEmphasis">y</span>, with the same square mod <span class="docEmphasis">n</span>. So (<span class="docEmphasis">x</span> + <span class="docEmphasis">y</span>)(<span class="docEmphasis">x</span> - <span class="docEmphasis">y</span>) = <span class="docEmphasis">x</span><sup>2</sup> - <span class="docEmphasis">y</span><sup>2</sup> = 0 mod <span class="docEmphasis">n</span>. If <span class="docEmphasis">n</span> has <span class="docEmphasis">k</span> distinct prime factors, then <span class="docEmphasis">x</span><sup>2</sup> has 2<span class="docEmphasis"><sup>k</sup></span> square roots mod <span class="docEmphasis">n</span> (see &sect;<a class="docLink" href="ch07lev1sec5.html#ch07lev1sec5">7.5</a> <span class="docEmphasis">Chinese Remainder Theorem</span>). So if <span class="docEmphasis">n</span> has at least 2 distinct prime factors, there is at least a 50% chance that <span class="docEmphasis">y</span> isn't <span class="docEmphasis">x</span> or -<span class="docEmphasis">x</span> mod <span class="docEmphasis">n</span>. In that case, neither <span class="docEmphasis">x</span> + <span class="docEmphasis">y</span> mod <span class="docEmphasis">n</span> nor <span class="docEmphasis">x</span> - <span class="docEmphasis">y</span> mod <span class="docEmphasis">n</span> is 0 mod <span class="docEmphasis">n</span>. And so the gcd of either of them with <span class="docEmphasis">n</span> must be a nontrivial factor of <span class="docEmphasis">n</span>.</p>
+</td></tr></table></p><br /></li><li><p class="docList">Suppose Fred wants to impersonate Alice. Anyone (including Fred) can compute squares mod <span class="docEmphasis">n</span>. Fred cannot take square roots mod <span class="docEmphasis">n</span>, but if he starts with a random <span class="docEmphasis">r</span>, he can compute <span class="docEmphasis">r</span><sup>2</sup>. Fred can give the correct answers for subset 2. But he cannot give the correct answers for subset 1, since he does not know s. So, what is the purpose of subset 2? Why isn't the protocol simply that Alice sends pairs &lt;<span class="docEmphasis">r<sub>i</sub></span><sup>2</sup>, <span class="docEmphasis">sr<sub>i</sub></span>&gt;?</p><p class="docList">The problem with the simpler protocol is that once Alice sends a list of values to Bob, Bob can send the same values to Carol and successfully impersonate Alice. With the protocol as <a name="iddle2003"></a><a name="iddle2144"></a>specified, the only information Bob can get is some numbers <span class="docEmphasis">z<sub>i</sub></span> for which Alice tells him the square root of <span class="docEmphasis">z<sub>i</sub></span><sub></sub> (those in subset 2), and some numbers <span class="docEmphasis">z<sub>i</sub></span> for which Alice tells him the square root of <span class="docEmphasis">vz<sub>i</sub></span>. He doesn't need Alice in order to find numbers for which he knows the square rootÂhe can get such numbers himself by taking random numbers and squaring them. But he does need Alice for finding pairs &lt;
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+, <span class="docEmphasis">sr<sub>i</sub></span>&gt;. However, for any &lt;
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+, <span class="docEmphasis">sr<sub>i</sub></span>&gt; he obtains from Alice rather than starting with <span class="docEmphasis">r<sub>i</sub></span> and squaring it himself, he will not know <span class="docEmphasis">r<sub>i</sub></span>Âhe will only know <span class="docEmphasis">sr<sub>i</sub></span>.</p><p class="docList">So, assuming Fred has overheard Alice proving her identity to some people (maybe even Fred), Fred may have collected some values of &lt;
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+, <span class="docEmphasis">sr<sub>i</sub></span>&gt;. When Fred attempts to impersonate Alice he has a choice for each number of taking one of the values he has overheard from Alice, and for those he will be able to know the answer if they are selected to be in subset 1, or he can choose a random <span class="docEmphasis">r</span> and square it, and for those he will know the answer if they are selected to be in subset 2. But there will be no number for which he'll know both answers. That means there is a 50% probability, for each <span class="docEmphasis">i</span>, that Fred will be unlucky, and Carol will ask for the answer Fred does not know. If the protocol demands that Fred sends enough values (say 30), then the probability is overwhelming that his impersonation will be discovered.</p></li></ul>
+<p class="docText">This scheme is much less work than RSA. Work for Alice is 45 modular multiplies (30 squarings plus an average 15 multiplies by <span class="docEmphasis">s</span>). Work for Bob is the same. By contrast, using RSA Alice must do a modular exponentiation with an average 768 modular multiplies, while Bob would get off easier with three (assuming a public exponent of 3).</p>
+<a name="ch06lev2sec20"></a>
+<h4 id="title-IDAEVBAE" class="docSection2Title">6.8.1. Zero Knowledge Signatures</h4>
+<p class="docText">Any zero knowledge system can be transformed into a public key signature scheme, though the performance in terms of bandwidth and CPU power usually makes the resulting scheme unattractive. Let's assume a typical sort of zero knowledge system. Alice has some sort of secret that enables her to transmit something and compute any answer to a question Bob might pose about that something, whereas an impostor can answer only one specific question Bob might pose. For example, in the case of the graph isomorphism scheme, Alice's secret is the mapping between graphs <span class="docEmphasis">G</span><sub>1</sub> and <span class="docEmphasis">G</span><sub>2</sub>. The &quot;something&quot; that Alice transmits is a new graph, <span class="docEmphasis">G<sub>i</sub></span>. Bob's challenges are binary values. Only Alice can answer both <span class="docEmphRomanAlt">0</span> (show me the mapping from <span class="docEmphasis">G<sub>i</sub></span> to <span class="docEmphasis">G</span><sub>1</sub>) and <span class="docEmphRomanAlt">1</span> (show me the mapping from <span class="docEmphasis">G<sub>i</sub></span> to <span class="docEmphasis">G</span><sub>2</sub>). An impostor, say Trudy, can only answer one of the values (if she derived <span class="docEmphasis">G<sub>i</sub></span> from <span class="docEmphasis">G</span><sub>1</sub>, she'll be lucky if Bob asks <span class="docEmphRomanAlt">0</span> but be unable to respond if Bob asks <span class="docEmphRomanAlt">1</span>).</p>
+<p class="docText">In some other zero knowledge proof schemes Bob's challenge is a larger number (say 16 bits). Alice can answer any value Bob supplies, whereas impostor Trudy can only know a single value. So Trudy in that case would have only a 1 in 2<sup>16</sup> chance (per challenge) of being lucky enough for Bob to supply the question she can answer.</p>
+<p class="docText">A signature scheme is not interactive. Bob cannot supply a challenge, or set of challenges. Instead, Alice has a message <span class="docEmphasis">m</span> that she wishes to sign. We're going to use a message digest function as a Bob surrogate. The message digest function will create a set of challenges that Alice cannot predict, and the fact that she can answer all the queries will reassure someone that Alice did produce the signature.</p>
+<p class="docText">Let's use Fiat-Shamir as an example. If Alice were proving her identity to Bob using Fiat-Shamir, her public key would be &lt;<span class="docEmphasis">n</span>,<span class="docEmphasis">v</span>&gt; and she'd transmit 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ mod <span class="docEmphasis">n</span> (for randomly chosen <span class="docEmphasis">r</span><sub>1</sub>,...<span class="docEmphasis">r<sub>k</sub></span>). Then Bob would send her <span class="docEmphasis">k</span> binary challenges. Now let's transform it into a signature scheme. Alice (and someone verifying Alice's signature) will take the message <span class="docEmphasis">m</span>, concatenated with the <span class="docEmphasis">k</span> values 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ mod <span class="docEmphasis">n</span>. The result is message digested, and the resulting message digest is used as the surrogate Bob. For a 128-bit message digest, if <span class="docEmphasis">k</span> is 128, then each bit in the message digest corresponds to the challenge for the corresponding <span class="docEmphasis">r<sub>i</sub></span>. The signature on <span class="docEmphasis">m</span> consists of the <span class="docEmphasis">k</span> values 
+
+<img border="0" alt="" id="118095013052" width="15" height="19" src="180equ01.jpg" />
+
+
+ mod <span class="docEmphasis">n</span> and the <span class="docEmphasis">k</span> responses to the calculated challenges.</p>
+<p class="docText">Why can't impostor Trudy forge a signature? She can choose any <span class="docEmphasis">k</span> values of <span class="docEmphasis">r<sub>i</sub></span>, but until she chooses them, she cannot predict the generated challenge for each one. She can spend a lot of off-line searching for a set of <span class="docEmphasis">r<sub>i</sub></span> that will happen to generate the challenges she can answer, so <span class="docEmphasis">k</span> probably needs to be a bit larger than it would be in an interactive zero knowledge proof. For instance, it might be acceptable for an impostor to have only a one in a billion chance of fooling an interactive Bob, but an impostor that was constructing a signature might be able to test a billion signatures for one that wound up asking the right questions. If there's a 1 in 2<sup>64</sup> chance, then a signature verifier can be reasonably certain that an impostor could not have been lucky enough, even with an off-line search, to find an appropriate set of <span class="docEmphasis">r<sub>i</sub></span>.</p>
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"><a href="15051538.html"><img src="btn_next_.gif" width="1" height="1" alt="Next" border="0" /></a> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch06lev1sec7.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch06lev1sec9.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

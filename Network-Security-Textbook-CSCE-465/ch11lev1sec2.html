@@ -1,0 +1,90 @@
+<html><head><title>11.2. Mutual Authentication</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch11lev1sec1.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch11lev1sec3.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a>Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch11lev1sec2"></a>
+<h3 id="title-IDA0NJTF" class="docSection1Title">11.2. Mutual Authentication</h3>
+<p class="docText">Suppose we want to do mutual authentication, i.e. Alice will know for sure she is communicating with Bob. We could just do an authentication exchange in each direction:</p>
+<a name="ch11fig07"></a><p><center>
+<h5 class="docFigureTitle">Protocol 11-7. Mutual authentication based on a shared secret <span class="docEmphasis">K</span><sub>Alice-Bob</sub></h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="191" src="11fig07.jpg" /></p>
+<br />
+<a name="ch11lev2sec3"></a>
+<h4 id="title-IDAAPJTF" class="docSection2Title">11.2.1. Reflection Attack</h4>
+<p class="docText">The first thing we might notice is that the protocol is inefficient. We can reduce the protocol down to three messages (instead of five used above) by putting more than one item of information into each message:</p>
+<p class="docText">This version of the protocol has a security pitfall known as the <b><a class="docLink" href="app02.html#gloss01_183">reflection attack</a></b>. Suppose Trudy wants to impersonate Alice to Bob. First Trudy starts <a class="docLink" href="#ch11fig08">Protocol 11-8</a>, but when she receives the challenge from Bob, she cannot proceed further, because she can't encrypt <span class="docEmphasis">R</span><sub>1</sub>.</p>
+<a name="ch11fig08"></a><p><center>
+<h5 class="docFigureTitle">Protocol 11-8. Optimized mutual authentication based on a shared secret <span class="docEmphasis">K</span><sub>Alice-Bob</sub></h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="116" src="11fig08.jpg" /></p>
+<br />
+<a name="ch11fig09"></a><p><center>
+<h5 class="docFigureTitle">Figure 11-9. Beginning of reflection attack</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="79" src="11fig09.jpg" /></p>
+<br />
+<blockquote>
+<p class="docText"><span class="docEmphasis">&quot;I can't explain</span> myself, <span class="docEmphasis">I'm afraid sir,&quot; said Alice, &quot;because I'm not myself, you see.&quot;</span></p>
+<p class="docText">Â<span class="docEmphasis">Alice in Wonderland</span></p></blockquote>
+<p class="docText">However, note that Trudy has managed to get Bob to encrypt <span class="docEmphasis">R</span><sub>2</sub>. So at this point Trudy opens a second session to Bob. This time she uses <span class="docEmphasis">R</span><sub>1</sub> as the challenge to Bob:</p>
+<a name="ch11fig10"></a><p><center>
+<h5 class="docFigureTitle">Figure 11-10. Second session in reflection attack</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="79" src="11fig10.jpg" /></p>
+<br />
+<p class="docText">Trudy can't go any further with this session, because she can't encrypt <span class="docEmphasis">R</span><sub>3</sub>. But now she knows <span class="docEmphasis">K</span><sub>Alice-Bob</sub>{<span class="docEmphasis">R</span><sub>1</sub>}, so she can complete the first session.</p>
+<p class="docText">This is a serious security flaw, and there are deployed protocols that contain this flaw. In many environments it is easy to exploit this, since it might be possible to open multiple simultaneous connections to the same server, or there might be multiple servers with the same secret for Alice (so Trudy can get a different server to compute <span class="docEmphasis">f</span>(<span class="docEmphasis">K</span><sub>Alice-Bob</sub>,<span class="docEmphasis">R</span><sub>1</sub>) so that she can impersonate Alice to Bob).</p>
+<p class="docText">We can foil the reflection attack if we are careful and understand the pitfalls. Here are two methods of fixing the protocol, both of which are derived from the general principle <span class="docEmphasis">don't have Alice and Bob do exactly the same thing</span>:</p>
+<ul><li><p class="docList">different keysÂHave the key used to authenticate Alice be different from the key used to authenticate Bob. We could use two totally different keys shared by Alice and Bob at the cost of additional configuration and storage. Alternatively we could derive the key used for authenticating Bob from the key used to authenticate Alice. For instance, Bob's key might be -<span class="docEmphasis">K</span><sub>Alice-Bob</sub>, or <span class="docEmphasis">K</span><sub>Alice-Bob</sub>+1, or <span class="docEmphasis">K</span><sub>Alice-Bob</sub><img src="U2295.GIF" border="0" />F0F0F0F0F0F0F0F0<sub>16</sub>. Any of these would foil Trudy in her attempt to impersonate Alice to Bob since she would not be able to get Bob to encrypt anything using Alice's key.</p></li><li><p class="docList">different challengesÂInsist that the challenge from the initiator (Alice) look different from the challenge from the responder. For instance, we might require that the initiator challenge be an odd number and the responder challenge be an even number. Or the name of the party that created the challenge might be concatenated with the challenge before encryption, so that if the challenge from Alice to Bob was <span class="docEmphasis">R</span>, Bob would encrypt <span class="docEmphRomanAlt">Bob</span>|<span class="docEmphasis">R</span> (the string <span class="docEmphRomanAlt">Bob</span> concatenated with <span class="docEmphasis">R</span>). This would foil Trudy, since in order to impersonate Alice to Bob, Trudy would need to get Bob to encrypt the string <span class="docEmphRomanAlt">Alice</span> concatenated with some number.</p></li></ul>
+<p class="docText">Notice that <a class="docLink" href="#ch11fig07">Protocol 11-7</a> did not suffer from the reflection attack. The reason is that it follows another good general principle of security protocol design: <span class="docEmphasis">the initiator should be the first to prove its identity</span>. Ideally, you shouldn't prove your identity until the other side does, but since that wouldn't work, the assumption is that the initiator is more likely to be the bad guy.</p>
+<blockquote>
+<p class="docText"><span class="docEmphasis">...if you only spoke when you were spoken to, and the other person always waited for</span> you <span class="docEmphasis">to begin, you see nobody would ever say anything...</span></p>
+<p class="docText">ÂAlice (in <span class="docEmphasis">Through the Looking Glass</span>)</p></blockquote>
+<a name="ch11lev2sec4"></a>
+<h4 id="title-IDAF4JTF" class="docSection2Title">11.2.2. Password Guessing</h4>
+<p class="docText">Another security weakness of <a class="docLink" href="#ch11fig08">Protocol 11-8</a> (which doesn't exist in <a class="docLink" href="#ch11fig07">Protocol 11-7</a>) is that Trudy can mount an off-line password-guessing attack without needing to eavesdrop. All she needs to do is send a message to Bob claiming to be Alice and enclosing a number to be encrypted, and Bob will obligingly return the encrypted value. Then Trudy has the pair &lt;<span class="docEmphasis">R</span>, <span class="docEmphasis">f</span>(<span class="docEmphasis">K</span><sub>Alice-Bob</sub>,<span class="docEmphasis">R</span>)&gt; which she can use to check password guesses. We could fix that by making the protocol one message longer (<a class="docLink" href="#ch11fig11">Protocol 11-11</a>).</p>
+<a name="ch11fig11"></a><p><center>
+<h5 class="docFigureTitle">Protocol 11-11. Less optimized mutual authentication based on a shared secret <span class="docEmphasis">K</span><sub>Alice-Bob</sub></h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="153" src="11fig11.jpg" /></p>
+<br />
+<p class="docText">Now Trudy can't obtain a quantity with which to do off-line password guessing by claiming to be Alice, but she can by impersonating Bob's address and tricking Alice into attempting a connection to her. The threat of having Trudy impersonate Bob should not be ignored, but it is much more difficult than impersonating Alice.</p>
+<a name="ch11lev2sec5"></a>
+<h4 id="title-IDAPIKTF" class="docSection2Title">11.2.3. Public Keys</h4>
+<p class="docText">Mutual authentication can also be done with public key technology, assuming that Bob and Alice know each other's public keys. It can be done with three messages:</p>
+<a name="ch11fig12"></a><p><center>
+<h5 class="docFigureTitle">Protocol 11-12. Mutual authentication with public keys</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="116" src="11fig12.jpg" /></p>
+<br />
+<p class="docText">A variant is for Alice to send <span class="docEmphasis">R</span><sub>2</sub> and for Bob to return it signed (and similarly for Alice to sign <span class="docEmphasis">R</span><sub>1</sub>).</p>
+<p class="docText">Public key mutual authentication presents some special challenges. How does Alice (or Alice's workstation) know Bob's public key? Often the situation is that Alice is a human, working on a generic workstation. In such cases Alice isn't going to remember Bob's public key, nor is Alice's workstation likely to have it stored. It could be done by having Alice attach to something, hoping it's Bob, and having the thing she's talking to send its public key. But that would not be secure if Trudy is impersonating Bob.</p>
+<p class="docText">We also have the problem of having Alice's workstation obtain Alice's private key when all Alice knows is a password. It is generally straightforward to convert a password into a secret key, because most secret key algorithms will accept any value of the right size as a key. Some public key algorithmsÂnotably RSAÂhave private keys that take special forms and cannot easily be derived from passwords. The usual method of dealing with this is to have Alice's workstation retrieve Alice's private key, encrypted with her password, from a directory service, or perhaps from Bob. It is not much more trouble to store, in the same place, information that would allow Alice to reliably learn Bob's public key. Two possible techniques:</p>
+<ul><li><p class="docList">Store Bob's public key encrypted with Alice's password. If anyone is impersonating Bob, they will not be able to give Alice a quantity encrypted with her password for which they'd know a corresponding private key.</p></li><li><p class="docList">Store a certificate for Bob's public key, signed with Alice's private key. Once her workstation obtains her private key, it can validate the certificate for Bob's public key.</p></li></ul>
+<p class="docText">For more information on this, see <a class="docLink" href="ch15.html#ch15">Chapter 15</a> <span class="docEmphasis">PKI (Public Key Infrastructure)</span> and &sect;<a class="docLink" href="ch12lev1sec4.html#ch12lev1sec4">12.4</a> <span class="docEmphasis">Strong Password Credentials Download Protocols</span>.</p>
+<a name="ch11lev2sec6"></a>
+<h4 id="title-IDADLKTF" class="docSection2Title">11.2.4. Timestamps</h4>
+<p class="docText">We can reduce the mutual authentication down to two messages by using timestamps instead of random numbers for challenges:</p>
+<a name="ch11fig13"></a><p><center>
+<h5 class="docFigureTitle">Protocol 11-13. Mutual authentication based on synchronized clocks and a shared secret <span class="docEmphasis">K</span><sub>Alice-Bob</sub></h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="400" height="79" src="11fig13.jpg" /></p>
+<br />
+<p class="docText">This two message variant is very useful because it is easy to add onto existing protocols (such as request/response protocols), since it does not add any additional messages. But it has to be done carefully. In the diagram we have Bob encrypt a timestamp later than Alice's timestamp. Obviously Bob can't send the same timestamp back to Alice, since that would hardly be mutual authentication. (Alice would be assured that she was either talking to Bob or someone smart enough to copy a field out of her request!) So in the exchange, Alice and Bob have to encrypt different timestamps, use different keys for encrypting the timestamp, concatenate their name to the timestamp before encrypting it, or use any other scheme that will cause them to be sending different things. And the issues involved with the one-way authentication done with timestamps apply here as well (time must not go backwards, they must remember values used within the clock skew, etc.).</p>
+<p class="docText">Note that any modification to the timestamp would do. The idea of <span class="docEmphasis">timestamp</span>+1 comes from Needham-Schroeder, where they have one side use the incremented challenge of the other. We use <span class="docEmphasis">timestamp</span>+1 in our example because that's what Kerberos V4 uses, but <span class="docEmphasis">timestamp</span>+1 is probably not the best choice. <span class="docEmphasis">timestamp</span>+1 has the potential problem that Trudy eavesdropping could use <span class="docEmphasis">K</span><sub>Alice-Bob</sub>{<span class="docEmphasis">timestamp</span>+1} to impersonate Alice. A better choice would be a flag concatenated with the timestamp indicating whether the initiator or responder is transmitting. Although the threat of Trudy using <span class="docEmphasis">K</span><sub>Alice-Bob</sub>{<span class="docEmphasis">timestamp</span>+1} can be avoided if Bob keeps both <span class="docEmphasis">timestamp</span> and <span class="docEmphasis">timestamp</span>+1 in his replay cache, in general it is poor security practice to use something like +1, where there isn't anything intrinsically different between what Bob does and what Alice does. Also, if service Bob consists of multiple replicas all with the same key, where it would be difficult for a <a name="iddle1981"></a>replica to keep track of timestamps used at other replicas, then the quantity Alice encrypts should include something unique to the replica she's talking to, such as its name or IP address.</p>
+<a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch11lev1sec1.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch11lev1sec3.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

@@ -1,0 +1,27 @@
+<html><head><title>16.10. Plausible Deniability</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch16lev1sec9.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch16lev1sec11.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch16lev1sec10"></a>
+<h3 id="title-IDASBOYK" class="docSection1Title">16.10. Plausible Deniability</h3>
+<p class="docText">If a protocol involves having Alice sign something containing Bob's name, then it offers proof that Alice intentionally talked to Bob (though it still gives no indication of what they talked about). In some cases Alice would like to assure Bob that it is her, but not provide proof that she talked to Bob. If Alice and Bob are authenticating each other based on a shared secret, then there is no way to prove to a third party that Alice and Bob communicated with each other, because the entire conversation could have been constructed by Alice or Bob. If Alice and Bob authenticate each other using public encryption keys, <span class="docEmphasis">anyone</span> could create an entire conversation that looks like a conversation between Alice and Bob (e.g., consider <a class="docLink" href="ch16lev1sec8.html#ch16fig07">Protocol 16-7</a>, and change the first two messages from being signed by the sender to being encrypted with the recipient's public key. No knowledge of either side's private key is required to create such messages). If Alice and Bob authenticate each other using public signature keys, then it is possible to create a protocol in which each signs information including the other's identity, in which case there is no <span class="docEmphRoman"><a class="docLink" href="app02.html#gloss01_166">plausible deniability</a></span>. But it is also possible to avoid signing the other side's identity, and therefore preserving plausible deniability (see <a class="docLink" href="ch16lev1sec8.html#ch16fig07">Protocol 16-7</a>).</p>
+<a name="ch16fig08"></a><p><center>
+<h5 class="docFigureTitle">Protocol 16-8. Plausible deniability with signature keys</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="300" height="219" src="16fig08.jpg" /></p>
+<br />
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch16lev1sec9.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch16lev1sec11.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

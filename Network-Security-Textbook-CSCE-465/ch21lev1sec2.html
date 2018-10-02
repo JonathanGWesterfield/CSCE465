@@ -1,0 +1,106 @@
+<html><head><title>21.2. Structure of a PEM Message</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch21lev1sec1.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch21lev1sec3.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch21lev1sec2"></a>
+<h3 id="title-IDA1ZJK0" class="docSection1Title">21.2. Structure of a PEM Message</h3>
+<p class="docText">A mail message can contain pieces that have been processed in different ways by PEM. For instance, part of a message might be encrypted, and another part might be integrity-protected. PEM puts markers before and after such blocks so that the PEM at the destination will know which pieces need what processing. PEM marks a piece that it has processed in some way (for instance encrypted) with a text string before and after the piece. PEM will insert</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">before and insert</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">at the end of the piece of the message that PEM has processed.</p>
+<p class="docText">Extra information needs to be sent along with the PEM-processed message, for instance the (encrypted) key used to encrypt the data, or the message integrity code (MIC)<sup class="docFootnote"><a class="docLink" href="#ch21fn01">[1]</a></sup>. S/MIME encodes this information as pure cybercrud, but PEM inserts a label for each piece of information attached to the message it has processed (apparently to make books like this one more readable). There are labels for each piece of PEM information, for instance <span class="docEmphRomanAlt">Proc-Type</span>, <span class="docEmphRomanAlt">Originator-ID-Asymmetric</span>, and <span class="docEmphRomanAlt">MIC-Info</span>. The intention is that most humans will ignore that stuff. The delimiting strings are indeed helpful to alert a human that might not have a PEM-capable mail reader as to why the message seems like junk. In &sect;<a class="docLink" href="ch21lev1sec15.html#ch21lev1sec15">21.15</a> <span class="docEmphasis">Message Formats</span> we will walk through the PEM message syntax in its full glory, explaining exactly what each field means and which variations are allowed.</p><blockquote><p class="docFootnote"><sup><a name="ch21fn01">[1]</a></sup> PEM refers to the cryptographic message integrity code as a MIC, which is a synonym for MAC, the term that has become more widely used.</p></blockquote>
+<p class="docText">The different types of pieces PEM can combine into a message are</p>
+<ul><li><p class="docList">ordinary, unsecured data</p></li><li><p class="docList">integrity-protected unmodified dataÂAn integrity check is added to the message, but the original message is included unmodified as part of the PEM message. The PEM terminology for this kind of data is <span class="docEmphRomanAlt">MIC-CLEAR</span>. The assumption is that the text will not be garbled in annoying ways along the route by meddling mail utilities. Otherwise the integrity check will <a name="iddle1330"></a><a name="iddle1654"></a>not work. See &sect;<a class="docLink" href="ch21lev1sec7.html#ch21lev1sec7">21.7</a> <span class="docEmphasis">Reformatting Data to Get Through Mailers</span>. (Note that, as with the types below, the integrity check also provides source authentication.)</p></li><li><p class="docList">integrity-protected encoded dataÂPEM first encodes the message so that it will pass through all mailers unmodified. Then PEM adds an integrity check. PEM calls this <span class="docEmphRomanAlt">MIC-ONLY</span>. Since the encoded message is not readable by normal humans, the mail program at the destination must be able to convert the text back into human readable format.</p></li><li><p class="docList">encoded encrypted integrity-protected dataÂPEM computes an integrity check on the message. PEM then encrypts the message and the integrity check with a randomly selected per-message secret key. The encrypted message, the encrypted integrity check, and the per-message key (encrypted by the interchange keyÂsee &sect;<a class="docLink" href="ch21lev1sec3.html#ch21lev1sec3">21.3</a> <span class="docEmphasis">Establishing Keys</span>) are each then encoded to pass through mailers as ordinary text. PEM calls this <span class="docEmphRomanAlt">ENCRYPTED</span>. Clearly in this case the mail program at the destination must be PEM-aware so that it can decrypt the message.</p></li></ul>
+<p class="docText">For example, let's assume the simple message</p>
+<p><table cellspacing="0" class="allBorders" border="1" rules="none" cellpadding="5"><colgroup align="left" span="2"><col width="50"></col><col width="350"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top">&nbsp;</td><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">From: Alice</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top">&nbsp;</td><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">To: Bob</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top">&nbsp;</td><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">Subject: Keep this proposition private!</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top">&nbsp;</td><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">Date: Fri, 01 Apr 94 10:12:37 -0400</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top">&nbsp;</td><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">Care to meet me at my apartment tonight?</span></p></td></tr></table></p><br />
+<p class="docText">The <span class="docEmphRomanAlt">MIC-CLEAR</span> version would look like this:</p>
+<a name="ch21list01"></a><h5 id="title-IDAOJBIS" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+ 
+
+90
+<pre><span class="docEmphStrong">From: Alice</span>
+<span class="docEmphStrong">To: Bob</span>
+<span class="docEmphStrong">Subject: Keep this proposition private!</span>
+<span class="docEmphStrong">Date: Fri, 01 Apr 94 10:12:37 -0400</span>
+
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">Proc-Type: 4, MIC-CLEAR</span>
+<span class="docEmphStrong">Content-Domain: RFC822</span>
+<span class="docEmphStrong">Originator-ID-Asymmetric: MEMxCzAJBgNVBAYTAlVTMSYwJAYDVQQKEx1EaWd</span>
+ <span class="docEmphStrong">pdGFsIEVxdWlwbWVudCBDb3Jwb3JhdGlvbjEMMAoGA1UECxMDTEtH,02</span>
+<span class="docEmphStrong">MIC-Info: RSA-MD5,RSA,u1OHP1RwLqePAoaN5nPk9W7Q2EfjaP+yDBSaLyMcSgc</span>
+ <span class="docEmphStrong">MK2YicGSAqLz47Ol+TUR4YmMD/JnHMtsCJerV2QFtFQ==</span>
+
+<span class="docEmphStrong">Care to meet me at my apartment tonight?</span>
+<span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre><br />
+</td></tr></table></p>
+<p class="docText">The <span class="docEmphRomanAlt">MIC-ONLY</span> version would look like this:</p>
+<a name="ch21list02"></a><h5 id="title-IDA3LBIS" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">From: Alice</span>
+<span class="docEmphStrong">To: Bob</span>
+<span class="docEmphStrong">Subject: Keep this proposition private!</span>
+<span class="docEmphStrong">Date: Fri, 01 Apr 94 10:15:02 -0400</span>
+
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">Proc-Type: 4,MIC-ONLY</span>
+<span class="docEmphStrong">Content-Domain: RFC822</span>
+<span class="docEmphStrong">Originator-ID-Asymmetric: MEMxCzAJBgNVBAYTAlVTMSYwJAYDVQQKEx1EaWd</span>
+ <span class="docEmphStrong">pdGFsIEVxdWlwbWVudCBDb3Jwb3JhdGlvbjEMMAoGA1UECxMDTEtH,02</span>
+<span class="docEmphStrong">MIC-Info: RSA-MD5,RSA,u1OHP1RwLqePAoaN5nPk9W7Q2EfjaP+yDBSaLyMcSgc</span>
+ <span class="docEmphStrong">MK2YicGSAqLz47Ol+TUR4YmMD/JnHMtsCJerV2QFtFQ==</span>
+
+<span class="docEmphStrong">G9yYXRpb24xDDAKBgNVBAsTA0xLRzESMBAGA1UEAxMJSm9obiBMaW5uMFcwCgYE</span>
+<span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre><br />
+</td></tr></table></p>
+<p class="docText">The <span class="docEmphRomanAlt">ENCRYPTED</span> version would look like this:</p>
+<a name="ch21list03"></a><h5 id="title-IDALOBIS" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">From: Alice</span>
+<span class="docEmphStrong">To: Bob</span>
+<span class="docEmphStrong">Subject: Keep this proposition private!</span>
+<span class="docEmphStrong">Date: Fri, 01 Apr 94 10:10:31 -0400</span>
+
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">Proc-Type: 4,ENCRYPTED</span>
+<span class="docEmphStrong">Content-Domain: RFC822</span>
+<span class="docEmphStrong">DEK-Info: DES-CBC,31747476B4831B1D</span>
+<span class="docEmphStrong">Originator-ID-Asymmetric: MEMxCzAJBgNVBAYTAlVTMSYwJAYDVQQKEx1EaWd</span>
+ <span class="docEmphStrong">pdGFsIEVxdWlwbWVudCBDb3Jwb3JhdGlvbjEMMAoGA1UECxMDTEtH,02</span>
+<span class="docEmphStrong">Key-Info: RSA,Pv3W7Ds86/fQBnvB5DsvUXgpK7+6h5aSVcNeYf9uWtly9m2VHzC</span>
+ <span class="docEmphStrong">v2t7A6qgbXtIcf4kaMj1FL2yl9/N9mWpm4w==</span>
+<span class="docEmphStrong">MIC-Info: RSA-MD5,RSA,FUiVRM3x5Ku0aZveGIJ1hv/hi3Iowpm1iypd9VP7MGw</span>
+ <span class="docEmphStrong">PPQra+42TkbR/2jhnqXyVEXLaJ7BSyNhBh/9znIUj5uk0N7IXeBxX</span>
+<span class="docEmphStrong">Recipient-ID-Asymmetric: MEMxCzAJBgNVBAYTAlVTMSYwJAYDVQQKEx1EaWdp</span>
+ <span class="docEmphStrong">dGFsIEVxdWlwbWVudCBDb3Jwb3JhdGlvbjEMMAoGA1UECxMDTEtH,05</span>
+<span class="docEmphStrong">Key-Info: RSA,dpUp7/QoY9YOZzZCVcIwxIDMN0WbGCFAGN3T+xlV/0pBu2n5+x8</span>
+ <span class="docEmphStrong">PmBvMUN0NcBi5vtqBS4cfmgShiK0I4zu05Q==</span>
+
+<span class="docEmphStrong">21OHDuHTP5BABnlsqENz1WVerZxxWo2AsPHhm2SIz9qpLMvxT/x0+8UEf8dDsTDr</span>
+<span class="docEmphStrong">wbQo9/x+</span>
+<span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre><br />
+</td></tr></table></p>
+<p class="docText"><a name="iddle1463"></a><a name="iddle1531"></a>Not only can these types of data be combined in a message, but they can be nested inside one another. For instance, assuming public key based user keys, Alice might enclose an integrity-protected message from Fred in an encrypted message to Bob. (<span class="docEmphRomanAlt">Bob, I received the following message from Fred. Should I alert the authorities?</span>)</p>
+<a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch21lev1sec1.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch21lev1sec3.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

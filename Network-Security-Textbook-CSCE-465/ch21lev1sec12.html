@@ -1,0 +1,73 @@
+<html><head><title>21.12. Bracketing PEM Messages</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch21lev1sec11.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch21lev1sec13.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch21lev1sec12"></a>
+<h3 id="title-IDANFICI" class="docSection1Title">21.12. Bracketing PEM Messages</h3>
+<p class="docText">Bob has just received a message. How does his PEM processor know whether the message is a PEM message, or just an ordinary message? Even if PEM knows (somehow) that the message is a PEM message, it's not always obvious where PEM should start processing, and where to end processing. For instance, Alice might have sent a signed message to Bob, so that the entire message as transmitted by Alice should be processed by PEM, but mail gateways en route might add cybercrud to the beginning and/or end of the message. (Luckily most mail gateways are sufficiently well-behaved so that they don't add things to the middle of a messageÂif they did, PEM would not be able to cope.) By the time Bob receives the message his PEM processor might need to skip the first few lines, start processing at some point, and end at some other point in the message. As a matter of fact, it isn't strictly necessary for an entire message from Alice to be PEM-processed. She might just want to encrypt a small portion of the message. For example:</p>
+<p><table cellspacing="0" class="allBorders" border="1" rules="rows" cellpadding="4"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><div class="docText"><pre>50</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">Hello Bob</span>
+<span class="docEmphStrong">This is to inform you that your raise has gone through and your new salary is</span>
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br /></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">header saying</span> <span class="docEmphStrong"><tt>encrypted</tt></span></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphStrong"><tt>afdsjklasdfjklas;f</tt></span></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><div class="docText"><pre>50</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">Once again congratulations on the good work.</span>
+<span class="docEmphStrong">Sincerely, Alice</span></pre></div><br /></p></td></tr></table></p><br />
+<p class="docText">That is why PEM marks the beginning of the PEM-processed portion of the message with the string</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">and the end of the message with the string</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">This might sound straightforward, but there are problems. A human being is perfectly capable of typing the above strings (we did, for instance). Suppose</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">appears in the middle of a message. For instance, Alice might be transmitting a portion of this book (after getting written permission from the publisher, of course!).</p>
+<p class="docText">Note that if the message is encoded (as a <span class="docEmphRomanAlt">MIC-ONLY</span> or <span class="docEmphRomanAlt">ENCRYPTED</span> message will be), then the string</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">can't possibly appear inside the (encoded) body of the message (even if it was in the original message) because &quot;<span class="docEmphRomanAlt">-</span>&quot; is not one of the encode characters. But PEM does have to worry about disguising the PEM end marker in <span class="docEmphRomanAlt">MIC-CLEAR</span> messages.</p>
+<p class="docText">Although the end marker is the only string that could confuse PEM, instead of only searching for</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">PEM always modifies every line of the text of a <span class="docEmphRomanAlt">MIC-CLEAR</span> message that begins with a dash, just because RFC 934 did it that way for forwarded mail markers. When PEM sees a line that begins with a dash, it adds the two characters &quot;<span class="docEmphRomanAlt">-</span>&quot; (dash space) to the beginning of the line. So the string</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">would appear as</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">- -----END PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">if it appeared in the middle of a <span class="docEmphRomanAlt">MIC-CLEAR</span> message. Any other line that started with a dash would also appear that way. For example,</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">--Sincerely, Alice--</span></pre></div><br />
+<p class="docText">would appear as:</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">- --Sincerely, Alice--</span></pre></div><br />
+<p class="docText">Bob's PEM processor will most likely remove the extra characters before displaying the text of the message to Bob. However, if Bob does not have PEM, Bob will see the PEM cybercrud, and see the mysterious &quot;<span class="docEmphRomanAlt">-</span>&quot; added to the beginning of some of the lines of the text of the message.</p>
+<p class="docText">PEM really can't defend itself from being confused in all cases. For instance, Alice might have typed the following message and sent it with a non-PEM mailer.</p>
+<a name="ch21list04"></a><h5 id="title-IDAYOICI" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">To: Bob</span>
+     <span class="docEmphStrong">Have you heard about this new PEM standard? I don't</span>
+<span class="docEmphStrong">completely understand it, but it seems to imply that I can make my</span>
+<span class="docEmphStrong">message to you secret by adding the string</span>
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">and some other stuff like MIC-INFO and RFC-1822 at the beginning</span>
+<span class="docEmphStrong">of the message and putting the string</span>
+<span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">at the end. I don't understand how this could prevent anyone from</span>
+<span class="docEmphStrong">reading the message, although maybe enough cybercrud on the</span>
+<span class="docEmphStrong">beginning of the message would convince them the message must be</span>
+<span class="docEmphStrong">hopelessly garbled and they might not even attempt to read it.</span>
+<span class="docEmphStrong">--Alice</span></pre><br />
+</td></tr></table></p>
+<p class="docText">If Bob's machine has PEM, it will see those markers and attempt to parse the message as a PEM message. It will probably notice that the message is ill-formed, though Alice could have typed something that happened to have all the text looking like correct fields. At that point it would probably notice that signatures would not verify or that it was lacking the proper certificates. If Alice did indeed manage to type in a completely correct PEM message, then PEM at Bob's node will not notice (Alice will have passed a warped form of the <span class="docEmphRoman"><a class="docLink" href="app02.html#gloss01_234">Turing test</a></span>).</p>
+<p class="docText">Another issue is nested messages. It is permissible to have, for instance, an encrypted message inside a signed message, or Alice might be forwarding a signed message from Fred as an enclosure in a signed message to Bob (see &sect;<a class="docLink" href="ch21lev1sec13.html#ch21lev2sec1">21.13.1</a> <span class="docEmphasis">Forwarding a Message</span>). The PEM processor at Bob's node presumably has to process the outer message, which might involve decrypting and/or decoding. Once the outer message is processed, the string</p>
+<div class="docText"><pre>90</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span></pre></div><br />
+<p class="docText">might be uncovered, and PEM has the same problem as we mentioned before, which is to somehow determine whether that is really the beginning of a PEM message, or whether Alice just happened to have included that particular string in her message.</p>
+<p class="docText">The PEM protocol was designed so that it is conceptually possible to nest PEM processing, but it would require PEM processors far more sophisticated than anyone is likely to ever implement to deal with all possible cases, and furthermore the user interface would be horrible to contemplate. (See <a class="docLink" href="ch21lev1sec19.html#ch21qa1q8">Homework Problem 8</a>.)</p>
+<a href="16051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch21lev1sec11.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch21lev1sec13.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

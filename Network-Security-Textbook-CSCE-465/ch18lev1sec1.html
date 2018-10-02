@@ -1,0 +1,29 @@
+<html><head><title>18.1. Photuris</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch18.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch18lev1sec2.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch18lev1sec1"></a>
+<h3 id="title-IDA4J3LC" class="docSection1Title">18.1. Photuris</h3>
+<p class="docText">Photuris was one of the two main candidates for this piece of IPsec (the other being SKIP). Photuris was basically a signed Diffie-Hellman exchange, with identity hiding by first doing an anonymous Diffie-Hellman, and using an initial stateless cookie (see &sect;<a class="docLink" href="ch16lev1sec5.html#ch16lev2sec1">16.5.1</a> <span class="docEmphasis">Cookies</span>). Alice transmits <span class="docEmphasis">C</span><sub>A</sub>, which Photuris calls a cookie, but it's not for the same purpose as Bob's stateless cookie <span class="docEmphasis">C</span><sub>B</sub>. <span class="docEmphasis">C</span><sub>A</sub> is just a way for Alice to keep connection attempts separate, in case she is initiating multiple simultaneous connections to Bob. Messages 3 and 4 consist of the Diffie-Hellman exchange, and the <a name="iddle2007"></a>resulting Diffie-Hellman key is used to encrypt the identities in messages 5 and 6. In addition to the identities, the signatures on the previous messages are sent in message 5 and 6.</p>
+<a name="ch18fig01"></a><p><center>
+<h5 class="docFigureTitle">Protocol 18-1. Photuris</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="500" height="356" src="18fig01.jpg" /></p>
+<br />
+<p class="docText">This is somewhat simplified. There's also crypto parameter negotiation, and choosing of SPI values for each direction. (SPI identifies the SA; see &sect;<a class="docLink" href="ch17lev1sec1.html#ch17lev2sec1">17.1.1</a> <span class="docEmphasis">Security Associations</span>).</p>
+<p class="docText"><span class="docEmphasis">C</span><sub>B</sub> is for denial of service protection. It is desirable for Bob to be stateless until message 3 (when he knows that Alice can return a valid cookie). The only way he can do this is to reuse his Diffie-Hellman secret number <span class="docEmphasis">b</span> for many connections. But if he <span class="docEmphasis">always</span> uses the same <span class="docEmphasis">b</span>, perfect forward secrecy will be lost. Therefore he should change his <span class="docEmphasis">b</span> periodically.</p>
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch18.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch18lev1sec2.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

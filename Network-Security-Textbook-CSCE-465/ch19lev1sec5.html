@@ -1,0 +1,35 @@
+<html><head><title>19.5. Session Resumption</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"><a href="16051538.html"><img src="btn_next_.gif" width="1" height="1" alt="Next" border="0" /></a> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch19lev1sec4.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch19lev1sec6.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch19lev1sec5"></a>
+<h3 id="title-IDAG4F5D" class="docSection1Title">19.5. Session Resumption</h3>
+<p class="docText">SSL/TLS assumes that a session is a relatively long-lived thing from which many &quot;connections&quot; can be cheaply derived. This is because it was designed to work with HTTP 1.0, which has a tendency to open a lot of TCP connections between the same client and server (one per item on the web page).</p>
+<p class="docText">The per-session master secret is established using expensive public key cryptography. Multiple connections can be cheaply derived from that master secret by doing a handshake that involves sending nonces (so that session keys will be unique), but avoids public key operations.</p>
+<p class="docText">SSL/TLS allows session resumption, but it is not stateless at Bob as in Lotus Notes (see &sect;<a class="docLink" href="ch16lev1sec9.html#ch16lev1sec9">16.9</a> <span class="docEmphasis">Session Resumption</span>). If Bob wants to allow a session to resume, i.e., wants to be able to have multiple connections based on that session, he sends the client (in message 2) a session_id (which is not secret), and stores (session_id, master secret). If Alice presents (in message 1) a session_id that Bob remembers, they can skip the public key portion of the handshake. The shortened handshake will only succeed if Alice and Bob remember the same master secret. If Bob does not recognize the session_id, he returns a different session_id in message 2 (or leaves it out entirely if he wants to make the session non-resumable).</p>
+<a name="ch19fig02"></a><p><center>
+<h5 class="docFigureTitle">Protocol 19-2. Session initiation if no previous state</h5>
+</center></p><p class="docText">
+<img border="0" alt="" id="118095009249" width="350" height="194" src="19fig02.jpg" /></p>
+<br />
+<p class="docText"></p><a name="ch19fig03"></a><p><center>
+<h5 class="docFigureTitle">Protocol 19-3. Session resumption if both sides remember session-id</h5>
+</center></p><p class="docText">
+<img border="0" alt="" id="118095009249" width="400" height="153" src="19fig03.jpg" /></p>
+<br />
+<p class="docText">It might seem odd for Alice, when resuming the session, to send a set of ciphers rather than just the cipher used in the session. Even if Bob has lost state about the session, wouldn't he make the same choice of cipher, given the same choices, as he made when the session was created? Not necessarily, because perhaps his policy has changed. So Alice is allowed, when resuming a session, to send a set of choices, but the set must at least contain the cipher that had been chosen previously for that session.</p>
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"><a href="16051538.html"><img src="btn_next_.gif" width="1" height="1" alt="Next" border="0" /></a> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch19lev1sec4.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch19lev1sec6.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

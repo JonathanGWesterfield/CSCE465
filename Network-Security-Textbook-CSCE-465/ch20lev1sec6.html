@@ -1,0 +1,63 @@
+<html><head><title>20.6. Authentication of the Source</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch20lev1sec5.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch20lev1sec7.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch20lev1sec6"></a>
+<h3 id="title-IDAMVQ1" class="docSection1Title">20.6. Authentication of the Source</h3>
+<p class="docText">With traditional (unsecured) mail systems, it is possible for Carol to send a message to Bob where the FROM: field says <span class="docEmphRomanAlt">Alice</span>. Obviously this can cause great harm if Bob takes the message seriously. For instance, Alice might be Bob's manager, and the message Carol sends might say <span class="docEmphRomanAlt">Urgent meeting with a customer in Juneau, Alaska; I've left; meet me there tomorrow</span>.</p>
+<p class="docText">It would be desirable for the message system to assure Bob that the message did indeed come from Alice.</p>
+<a name="ch20lev2sec5"></a>
+<h4 id="title-IDACWQ1" class="docSection2Title">20.6.1. Source Authentication Based on Public Key Technology</h4>
+<p class="docText">Assuming Bob knows Alice's public key, Alice can digitally sign the message, using her private key, which will assure Bob that Alice wrote the message. The method usually chosen to sign a message is for Alice to first compute a hash of the message (for instance using MD5), and then to sign the message digest, since computing a message digest is faster than public key operations, and the message digest is usually a smaller quantity to sign than the message.</p>
+<p class="docText">This method extends easily to multiple recipients and distribution lists. If Alice is sending a message to multiple recipients, the same signature will work for all recipients.</p>
+<p class="docText">If Alice does not know that Bob knows her public key, she could send the message anyway and let Bob fetch the public key (together with finding a chain of certificates to certify Alice's key) if he needs to. Or she could include the public key in the header of the message, together with a chain of certificates. Or she might guess that he already has a lot of the certificates in the chain, and she might just furnish what she thinks is likely to be the remainder.</p>
+<p class="docText">Note that Alice doesn't even have to know whether Bob is crypto-capable to send a signed message. Sometimes users send signed messages just to advertise the fact that they can. If the signature is formatted innocuously, it just looks like <span class="docEmphRoman"><a class="docLink" href="app02.html#gloss01_063">cybercrud</a></span> in the mail header to non-crypto-capable <a name="iddle1586"></a>recipients. Of course, added cybercrud sometimes annoys humans, even if it doesn't prevent them from deciphering the message. For example, the message</p>
+<p><table cellspacing="0" class="allBorders" border="1" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="350"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">From: Alice</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">To: Bob</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">Subject: I got PEM working</span></p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphRomanAlt">... and I'm sending this message with PEM.</span></p></td></tr></table></p><br />
+<p class="docText">would look something like this when received by Bob:</p>
+<a name="ch20list03"></a><h5 id="title-IDAKZQ1" class="docExampleTitle"></h5><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+
+
+
+90
+<pre><span class="docEmphStrong">To: Bob</span>
+<span class="docEmphStrong">Subject: I got PEM working</span>
+<span class="docEmphStrong">Date: Fri, 01 Apr 94 10:12:37 -0400</span>
+<span class="docEmphStrong">From: Alice</span>
+
+<span class="docEmphStrong">-----BEGIN PRIVACY-ENHANCED MESSAGE-----</span>
+<span class="docEmphStrong">Proc-Type: 4,MIC-CLEAR</span>
+<span class="docEmphStrong">Content-Domain: RFC822</span>
+<span class="docEmphStrong">DEK-Info: DES-CBC,31747476B4831B1D</span>
+<span class="docEmphStrong">Originator-ID-Asymmetric: MEMxCzAJBgNVBAYTAlVTMSYwJAYDVQQKEx1EaWd</span>
+ <span class="docEmphStrong">pdGFsIEVxdWlwbWVudCBDb3Jwb3JhdGlvbjEMMAoGA1UECxMDTEtH,02</span>
+<span class="docEmphStrong">MIC-Info: RSA-MD5,RSA,u1OHP1RwLqePAoaN5nPk9W7Q2EfjaP+yDBSaLyMcSgc</span>
+ <span class="docEmphStrong">MK2YicGSAqLz47Ol+TUR4YmMD/JnHMtsCJerV2QFtFQ==</span>
+
+<span class="docEmphStrong">... and I'm sending this message with PEM.</span>
+<span class="docEmphStrong">-----END PRIVACY-ENHANCED MESSAGE-----</span></pre><br />
+</td></tr></table></p>
+<a name="ch20lev2sec6"></a>
+<h4 id="title-IDAR1Q1" class="docSection2Title">20.6.2. Source Authentication Based on Secret Keys</h4>
+<p class="docText">If Alice has a shared key with Bob, then she can reassure Bob that she is Alice by proving she knows the shared secret key. She does this by performing some cryptographic computation on the message using the shared secret key. This quantity also serves as an integrity check, and is called a <b><a class="docLink" href="app02.html#gloss01_130">MIC</a></b> (message integrity code) by some and a MAC (message authentication code) by others (i.e., MIC and MAC are synonyms). The PEM standard calls it a MIC, but the term MAC is more commonly used today. Various possibilities for computing a MAC include:</p>
+<div style="font-weight:bold"><ol class="docList" type="1"><li><div style="font-weight:normal"><p class="docList">The MAC is the CBC residue of the message computed with the shared secret key.</p></div></li><li><div style="font-weight:normal"><p class="docList">The MAC is the message digest of the shared secret appended to the message.</p></div></li><li><div style="font-weight:normal"><p class="docList">The MAC is the encrypted message digest, where the 128-bit message digest is encrypted with the shared secret key, for instance in ECB or CBC mode.</p></div></li></ol></div>
+<p class="docText"><a name="iddle1639"></a>What if there are multiple recipients? Alice's shared secret with Bob will be different from Alice's shared secret with Ted. If the MAC method is 1 or 2 above, then Alice would have to do a computation-intensive cryptographic pass over the long message for each recipient. The third method is therefore preferable. Alice computes the message digest once, and computes the MAC on the message digest independently for each recipient.</p>
+<a name="ch20lev2sec7"></a>
+<h4 id="title-IDAA3Q1" class="docSection2Title">20.6.3. Source Authentication with Distribution Lists</h4>
+<p class="docText">With public keys, source authentication is easy, even with distribution lists. Basically, the distribution list will merely forward the message without changing the authentication information. Alice's public key will authenticate the message. The distribution list exploder plays no part in the source authentication.</p>
+<p class="docText">With secret keys it is more complicated. We can't assume Alice will share a secret key with every recipient, or even that Alice will know who the recipients are. The only choice is for Alice to share a key with the distribution list exploder. The distribution list exploder will be able to verify that the message came from Alice, but whatever authentication information Alice puts into the message will become meaningless after the distribution list exploder forwards the message. It must remove Alice's authentication information, and replace it with its own authentication information for each recipient. The recipients will know the message came from the distribution list exploder, but they will have to take the exploder's word that the message really did originate from Alice. When using mail exploders and secret key technology, it is vital that the mail exploder verify the source before forwarding the message, and include the name of the sender in the body of the message that the mail exploder cryptographically protects. PEM does not define a field to accomplish this, which would make it problematic to use secret key PEM with mail exploders. However, this was never a problem because:</p>
+<ul><li><p class="docList">Nobody deployed PEM-aware mail exploders.</p></li><li><p class="docList">Nobody used secret key PEM.</p></li></ul>
+<ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch20lev1sec5.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch20lev1sec7.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

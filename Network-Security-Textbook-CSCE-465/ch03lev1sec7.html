@@ -1,0 +1,71 @@
+<html><head><title>3.7. Homework</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch03lev1sec6.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch04.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><a href="15051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a>Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch03lev1sec7"></a>
+<h3 id="title-IDAH3ZMF" class="docSection1Title">3.7. Homework</h3>
+<p><table border="0" cellspacing="16" cellpadding="0"><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q1"></a><b>1.</b></td><td><p class="docText">Come up with as efficient an encoding as you can to specify a completely general one-to-one mapping between 64-bit input values and 64-bit output values.</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q2"></a><b>2.</b></td><td><p class="docText">Token cards display a number that changes periodically, perhaps every minute. Each such device has a unique secret key. A human can prove possession of a particular such device by entering the displayed number into a computer system. The computer system knows the secret keys of each authorized device. How would you design such a device?</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q3"></a><b>3.</b></td><td><p class="docText">How many DES keys, on the average, encrypt a particular plaintext block to a particular ciphertext block?</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q4"></a><b>4.</b></td><td><p class="docText">Make an argument as to why the initial permutation of the bits of the DES key cannot have any security value.</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q5"></a><b>5.</b></td><td><p class="docText">Suppose the DES mangler function mapped every 32-bit value to zero, regardless of the value of its input. What function would DES then compute?</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q6"></a><b>6.</b></td><td><p class="docText">Are all the 56 bits of the DES key used an equal number of times in the <span class="docEmphasis">K<sub>i</sub></span>? Specify, for each of the <span class="docEmphasis">K<sub>i</sub></span>, which bits are not used.
+
+</p><p class="docText"></p><a name="ch03sb04"></a><p><table cellspacing="0" width="90%" border="1" cellpadding="5"><tr><td>
+<h2 class="docSidebarTitle">RC4</h2>
+<div class="docText"><pre>65</pre></div><br /><div class="docText"><pre><span class="docEmphStrong">typedef unsigned char uns8;</span>
+<span class="docEmphStrong">typedef unsigned short uns16;</span>
+
+<span class="docEmphStrong">static uns8 state[256], x, y;   /* 258 octets of state information */</span>
+
+<span class="docEmphStrong">void</span>
+<span class="docEmphStrong">rc4init (key, length)    /* initialize for encryption / decryption */</span>
+    <span class="docEmphStrong">uns8 *key;</span>
+    <span class="docEmphStrong">uns16 length;</span>
+<span class="docEmphStrong">{</span>
+    <span class="docEmphStrong">int i;</span>
+    <span class="docEmphStrong">uns8 t;</span>
+    <span class="docEmphStrong">uns8 j;</span>
+    <span class="docEmphStrong">uns8 k = 0;</span>
+
+    <span class="docEmphStrong">for (i = 256; i--; )</span>
+       <span class="docEmphStrong">state[i] = i;</span>
+
+    <span class="docEmphStrong">for (i = 0, j = 0; i &lt; 256; i++, j = (j + 1) % length)</span>
+       <span class="docEmphStrong">t = state[i], state[i] = state[k += key[j] + t], state[k] = t;</span>
+    <span class="docEmphStrong">x = 0;</span>
+    <span class="docEmphStrong">y = 0;</span>
+<span class="docEmphStrong">}</span>
+
+<span class="docEmphStrong">uns8</span>
+<span class="docEmphStrong">rc4step ()   /* return next pseudo-random octet */</span>
+<span class="docEmphStrong">{</span>
+   <span class="docEmphStrong">uns8 t;</span>
+   <span class="docEmphStrong">t = state[y += state[++x]], state[y] = state[x], state[x] = t;</span>
+   <span class="docEmphStrong">return (state[state[x] + state[y]]);</span>
+<span class="docEmphStrong">}</span></pre></div><br />
+</td></tr></table></p><br /></td></tr></table></p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q7"></a><b>7.</b></td><td><p class="docText">What would change in the DES description if keys were input as 56-bit quantities rather than 64-bit quantities?</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q8"></a><b>8.</b></td><td><p class="docText">Why is a DES weak key (see &sect;<a class="docLink" href="ch03lev1sec3.html#ch03lev2sec6">3.3.6</a> <span class="docEmphasis">Weak and Semi-Weak Keys</span>) its own inverse? Hint: DES encryption and decryption are the same once the per-round keys are generated.</p>
+</td></tr><tr><td></td><td></td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q9"></a><b>9.</b></td><td><p class="docText">Why is each DES semi-weak key the inverse of another semi-weak key?</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q10"></a><b>10.</b></td><td><p class="docText">Class project: design and implement an efficient DES breaking system. (Hint: Have your system take as input a &lt;plaintext, ciphertext&gt; pair and a starting key number, and searches from that starting key number for a DES key that will map the plaintext into that ciphertext.) Use your system to tell us what DES key mapped <span class="docEmphRomanAlt">0</span> to <span class="docEmphRomanAlt">5761b9ab9858b34b<sub>16</sub></span>. Free T-shirts to the first ten correct answers.</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q11"></a><b>11.</b></td><td><p class="docText">Show that DES encryption and decryption are identical except for the order of the 48-bit keys. Hint: running a round backwards is the same as running it forwards but with the halves swapped (see &sect;<a class="docLink" href="ch03lev1sec3.html#ch03lev2sec4">3.3.4</a> <span class="docEmphasis">A DES Round</span>), and DES has a swap after round 16 when run forwards (see &sect;<a class="docLink" href="ch03lev1sec3.html#ch03lev2sec1">3.3.1</a> <span class="docEmphasis">DES Overview</span>).</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q12"></a><b>12.</b></td><td><p class="docText">Verify the <span class="docEmphasis">MixColumn</span> result in <a class="docLink" href="ch03lev1sec5.html#ch03fig25">Figure 3-25</a> by using the same method (in conjunction with <a class="docLink" href="ch03lev1sec5.html#ch03fig28">Figure 3-28</a>'s table) to compute <span class="docEmphasis">InvMixColumn</span> of the <span class="docEmphasis">MixColumn</span> result and checking that you produce the <span class="docEmphasis">MixColumn</span> input.</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q13"></a><b>13.</b></td><td><p class="docText">Describe in detail the optimization of the Rijndael inverse round mentioned at the end of &sect;<a class="docLink" href="ch03lev1sec5.html#ch03lev2sec18">3.5.6</a> <span class="docEmphasis">Optimization</span>.</p>
+</td></tr><tr valign="top"><td align="right" class="docText" width="50"><a name="ch03qa1q14"></a><b>14.</b></td><td><p class="docText">Give an upper bound on the number of 258-octet states possible in RC4.</p>
+</td></tr></table>
+<a href="15051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></div></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch03lev1sec6.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch04.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table><!--IP User 2--></td></body></head></html>

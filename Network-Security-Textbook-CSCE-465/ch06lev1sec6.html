@@ -1,0 +1,43 @@
+<html><head><title>6.6. How Secure Are RSA and Diffie-Hellman?</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch06lev1sec5.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch06lev1sec7.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top">Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch06lev1sec6"></a>
+<h3 id="title-IDAVS3JO" class="docSection1Title">6.6. How Secure Are RSA and Diffie-Hellman?</h3>
+<p class="docText">A brute force attack (trying all possible keys) requires an exponential amount of overhead. The security of RSA is based on the difficulty of factoring. The security of Diffie-Hellman is based on the difficulty of solving the discrete log problem. These problems have been proven to be equivalently difficult. The best known algorithms for solving them are subexponential (less than exponential), but superpolynomial, (more than any fixed degree polynomial). Because the difficulty is subexponential, the required size of the keys in these public key algorithms is much larger (say 1024 bits) than a corresponding secret key (say 80 bits). At the RSA patent expiration party, Eric Hughes created and performed the following, sung to the tune of <span class="docEmphasis">Supercalifragilisticexpialidocious</span>.</p>
+<blockquote>
+<p class="docText"><span class="docEmphasis">Superpolynomial subexponential runtimes.</span></p>
+<p class="docText"><span class="docEmphasis">Even though in practice it would take you several lifetimes,</span></p>
+<p class="docText"><span class="docEmphasis">If you ran it long enough you'd always find those two primes.</span></p>
+<p class="docText"><span class="docEmphasis">Superpolynomial subexponential runtimes</span></p>
+<p class="docText"><span class="docEmphasis">E to the root-log root-log-log [4x]</span></p>
+<p class="docText"><span class="docEmphasis">When I was but a naive lad first coding two's and three's</span></p>
+<p class="docText"><span class="docEmphasis">I thought the only &quot;orders of&quot; were trivialities.</span></p>
+<p class="docText"><span class="docEmphasis">But when I saw this function something opened up to me</span></p>
+<p class="docText"><span class="docEmphasis">The elegance of computational complexity.</span></p>
+<p class="docText"><span class="docEmphasis">[Chorus]</span></p>
+<p class="docText"><span class="docEmphasis">I was at a meeting when up came a man in black</span></p>
+<p class="docText"><span class="docEmphasis">Who told me that his agency had mounted an attack.</span></p>
+<p class="docText"><span class="docEmphasis">Convincing him was fruitless that his budget would collapse</span></p>
+<p class="docText"><span class="docEmphasis">All I know his trumpeter will soon be playing Taps.</span></p>
+<p class="docText"><span class="docEmphasis">[Chorus]</span></p>
+<p class="docText"><span class="docEmphasis">In virtual environments has grown up a debate</span></p>
+<p class="docText"><span class="docEmphasis">Of whether strong cryptography can overthrow the state.</span></p>
+<p class="docText"><span class="docEmphasis">But several such technologies including public key</span></p>
+<p class="docText"><span class="docEmphasis">Shall herald in the coming age of crypto-anarchy.</span></p>
+</blockquote>
+<a href="15051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch06lev1sec5.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch06lev1sec7.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>

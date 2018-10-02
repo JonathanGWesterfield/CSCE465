@@ -1,0 +1,171 @@
+<html><head><title>5.4. MD4</title><title>TeamUnknown</title><meta http-equiv="Content-Type" content="text/html;charset=utf-8" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/globalstyle.css" /><link href="includes/searchResults.css" rel="stylesheet" type="text/css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/style.css" /><link rel="STYLESHEET" type="text/css" href="portals/bvdep/xsltemplates/docsafari.css" /><body><table width="100%" border="0" cellspacing="0" cellpadding="0"><td class="docBookTitle"><a href="toc.html"><b>[ Team Unknown ]</b></a></td></table><td align="center"><a name="MainContent"></a><table width="95%"><tr><td align="left" class="v2"><!--Copyright (c) 2002 Safari Tech Books Online--><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch05lev1sec3.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch05lev1sec5.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><div id="section"><br /><table width="100%" border="0" cellspacing="0" cellpadding="0"><tr><td valign="top"><a href="15051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a>Networking Security Networking Security Networking Security Security Networking Security Networking Security Networking Charlie Kaufman Radia Perlman Mike Speciner Prentice Hall Network Security: Private Communication in a Public World, Second Edition<a name="ch05lev1sec4"></a>
+<h3 id="title-IDAWVRFG" class="docSection1Title">5.4. MD4</h3>
+<p class="docText"><a name="iddle1618"></a><a name="iddle1619"></a><a name="iddle1624"></a><a name="iddle1632"></a><a name="iddle1761"></a><a name="iddle1994"></a>MD4 was designed to be 32-bit-word-oriented so that it can be computed faster on 32-bit CPUs than an octet-oriented scheme like MD2. Also, MD2 requires the message to be an integral number of octets. MD4 can handle messages with an arbitrary number of bits. Like MD2 it can be computed in a single pass over the data, though MD4 needs more intermediate state.</p>
+<a name="ch05lev2sec8"></a>
+<h4 id="title-IDAQXRFG" class="docSection2Title">5.4.1. MD4 Message Padding</h4>
+<p class="docText">The message to be fed into the message digest computation must be a multiple of 512 bits (sixteen 32-bit words). The original message is padded by adding a 1 bit, followed by enough 0 bits to leave the message 64 bits less than a multiple of 512 bits. Then a 64-bit quantity representing the number of bits in the unpadded message, mod 2<sup>64</sup>, is appended to the message. The bit order within octets is most significant to least significant, the octet order is least significant to most significant.</p>
+<a name="ch05fig07"></a><p><center>
+<h5 class="docFigureTitle">Figure 5-7. Padding for MD4, MD5, SHA-1</h5>
+</center></p><p class="docText">
+<img border="0" alt="" width="350" height="72" src="05fig07.jpg" /></p>
+<br />
+<a name="ch05lev2sec9"></a>
+<h4 id="title-IDA0YRFG" class="docSection2Title">5.4.2. Overview of MD4 Message Digest Computation</h4>
+<p class="docText">The message digest to be computed is a 128-bit quantity (four 32-bit words). The message is processed in 512-bit (sixteen 32-bit words) blocks. The message digest is initialized to a fixed value, and then each stage of the message digest computation takes the current value of the message digest and modifies it using the next block of the message. The function that takes 512 bits of the message and digests it with the previous 128-bit output is known as the <span class="docEmphStrong">compression function</span>. The final result is the message digest for the entire message.</p>
+<p class="docText">Each stage makes three passes over the message block. Each pass has a slightly different method of mangling the message digest. At the end of the stage, each word of the mangled message digest is added to its pre-stage value to produce the post-stage value (which becomes the pre-stage value for the next stage). Therefore, the current value of the message digest must be saved at the beginning of the stage so that it can be added in at the end of the stage.</p>
+<p class="docText"><a name="iddle1930"></a>Each stage starts with a 16-word message block and a 4-word message digest value. The message words are called <span class="docEmphasis">m</span><sub>0</sub>, <span class="docEmphasis">m</span><sub>1</sub>, <span class="docEmphasis">m</span><sub>2</sub>,...<span class="docEmphasis">m</span><sub>15</sub>. The message digest words are called <span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>. Before the first stage the message digest is initialized to <span class="docEmphasis">d</span><sub>0</sub> = 67452301<sub>16</sub>, <span class="docEmphasis">d</span><sub>1</sub> = efcdab89<sub>16</sub>, <span class="docEmphasis">d</span><sub>2</sub> = 98badcfe<sub>16</sub>, and <span class="docEmphasis">d</span><sub>3</sub> = 10325476<sub>16</sub>, equivalent to the octet string (written as a concatenation of hex-encoded octets) 01|23|45|67|89|ab|cd|ef|fe|dc|ba|98|76|54|32|10.</p>
+<p class="docText">Each pass modifies <span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub> using <span class="docEmphasis">m</span><sub>0</sub>, <span class="docEmphasis">m</span><sub>1</sub>, <span class="docEmphasis">m</span><sub>2</sub>,...<span class="docEmphasis">m</span><sub>15</sub>. We will describe what happens in each pass separately.</p>
+<p class="docText">The computations we are about to describe use the following operations:</p>
+<ul><li><p class="docList">&Icirc;<sup><span class="docEmphasis">x</span><sub>&#176;</sub></sup> is the <span class="docEmphasis">floor</span> of the number <span class="docEmphasis">x</span>, i.e., the greatest integer not greater than <span class="docEmphasis">x</span>.</p></li><li><p class="docList">~<span class="docEmphasis">x</span> is the <span class="docEmphasis">bitwise complement</span> of the 32-bit quantity <span class="docEmphasis">x</span>.</p></li><li><p class="docList"><span class="docEmphasis">x</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">y</span> is the <span class="docEmphasis">bitwise and</span> of the 32-bit quantities <span class="docEmphasis">x</span> and <span class="docEmphasis">y</span>.</p></li><li><p class="docList"><span class="docEmphasis">x</span><img src="U2228.GIF" border="0" /><span class="docEmphasis">y</span> is the <span class="docEmphasis">bitwise or</span> of the two 32-bit quantities <span class="docEmphasis">x</span> and <span class="docEmphasis">y</span>.</p></li><li><p class="docList"><span class="docEmphasis">x</span><img src="U2295.GIF" border="0" /><span class="docEmphasis">y</span> is the <span class="docEmphasis">bitwise exclusive or</span> of the 32-bit quantities <span class="docEmphasis">x</span> and <span class="docEmphasis">y</span>.</p></li><li><p class="docList"><span class="docEmphasis">x</span>+<span class="docEmphasis">y</span> is the <span class="docEmphasis">binary sum</span> of the two 32-bit quantities <span class="docEmphasis">x</span> and <span class="docEmphasis">y</span>, with the carry out of the high order bit discarded.</p></li><li><p class="docList"><span class="docEmphasis">x</span>
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+<span class="docEmphasis">y</span> is the 32-bit quantity produced by taking the 32 bits of <span class="docEmphasis">x</span> and shifting them one position left <span class="docEmphasis">y</span> times, each time taking the bit shifted off the left end and placing it as the rightmost bit. This operation is known as a <span class="docEmphStrong">left rotate</span>.</p></li></ul>
+<a name="ch05lev2sec10"></a>
+<h4 id="title-IDAM5RFG" class="docSection2Title">5.4.3. MD4 Message Digest Pass 1</h4>
+<p class="docText"><a name="iddle1594"></a><a name="iddle1973"></a>A function <span class="docEmphasis">F</span>(<span class="docEmphasis">x</span>,<span class="docEmphasis">y</span>,<span class="docEmphasis">z</span>) is defined as (<span class="docEmphasis">x</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">y</span>)<img src="U2228.GIF" border="0" />(~<span class="docEmphasis">x</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">z</span>). This function takes three 32-bit words <span class="docEmphasis">x</span>, <span class="docEmphasis">y</span>, and <span class="docEmphasis">z</span>, and produces an output 32-bit word. This function is sometimes known as the <span class="docEmphStrong">selection function</span>, because if the <span class="docEmphasis">n</span><sup>th</sup> bit of <span class="docEmphasis">x</span> is a 1 it selects the <span class="docEmphasis">n</span><sup>th</sup> bit of <span class="docEmphasis">y</span> for the <span class="docEmphasis">n</span><sup>th</sup> bit of the output. Otherwise (if the <span class="docEmphasis">n</span><sup>th</sup> bit of <span class="docEmphasis">x</span> is a 0) it selects the <span class="docEmphasis">n</span><sup>th</sup> bit of <span class="docEmphasis">z</span> for the <span class="docEmphasis">n</span><sup>th</sup> bit of the output.</p>
+<p class="docText">A separate step is done for each of the 16 words of the message. For each integer <span class="docEmphasis">i</span> from 0 through 15,</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> = (<span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>(1-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(2-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(3-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>) + <span class="docEmphasis">m<sub>i</sub></span>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+<span class="docEmphasis">S</span><sub>1</sub>(<span class="docEmphasis">i</span><img src="U2227.GIF" border="0" />3)</p></td></tr></table></p><br />
+<p class="docText">where <span class="docEmphasis">S</span><sub>1</sub>(<span class="docEmphasis">i</span>) = 3 + 4<span class="docEmphasis">i</span>, so the 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+s cycle over the values 3, 7, 11, 15.</p>
+<p class="docText">If you don't find the previous sentence intimidating, you may go on to the next section. However, if you are a mere mortal, we'll explain, but just this once. The other passes in MD4 and MD5 are extremely similar, and we'll assume you'll understand their description with no further explanation.</p>
+<p class="docText">The &quot;<img src="U2227.GIF" border="0" />3&quot; that appears several times in the above equation means that only the bottom two bits are used (because we're doing a <span class="docEmphasis">bitwise and</span> with 11<sub>2</sub>). So <span class="docEmphasis">i</span><img src="U2227.GIF" border="0" />3 cycles 0, 1, 2, 3, 0, 1, 2, 3, ... while (-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3 cycles 0, 3, 2, 1, 0, 3, 2, 1,... and (1-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3 cycles 1, 0, 3, 2, 1, 0, 3, 2,.... We can write out the first few steps of the pass as follows:</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>0</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>3</sub> = (<span class="docEmphasis">d</span><sub>3</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>) + <span class="docEmphasis">m</span><sub>1</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 7</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>2</sub> = (<span class="docEmphasis">d</span><sub>2</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>) + <span class="docEmphasis">m</span><sub>2</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 11</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>1</sub> = (<span class="docEmphasis">d</span><sub>1</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>) + <span class="docEmphasis">m</span><sub>3</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 15</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">F</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>4</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr></table></p><br />
+<a name="ch05lev2sec11"></a>
+<h4 id="title-IDAKEXSB" class="docSection2Title">5.4.4. MD4 Message Digest Pass 2</h4>
+<p class="docText">A function <span class="docEmphasis">G</span>(<span class="docEmphasis">x</span>, <span class="docEmphasis">y</span>, <span class="docEmphasis">z</span>) is defined as (<span class="docEmphasis">x</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">y</span>)<img src="U2228.GIF" border="0" />(<span class="docEmphasis">x</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">z</span>)<img src="U2228.GIF" border="0" />(<span class="docEmphasis">y</span><img src="U2227.GIF" border="0" /><span class="docEmphasis">z</span>). This function is sometimes known as the <span class="docEmphStrong">majority function</span>, because the <span class="docEmphasis">n</span><sup>th</sup> bit of the output is a 1 iff at least two of the three input words' <span class="docEmphasis">n</span><sup>th</sup> bits are a 1. As for pass 1, we'll write out the first few steps. Note that in pass 2 (and pass 3 as well), the words of the message are not processed in order. Also note that there's a strange constant thrown in. To show that the designers didn't purposely choose a diabolical value of the constant, the constant is based on the square root of 2. The constant is 
+
+<img border="0" alt="" width="125" height="17" src="135equ03.jpg" />
+
+
+.</p>
+<p class="docText">A separate step is done for each of the 16 words of the message. For each integer <span class="docEmphasis">i</span> from 0 through 15,</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> = (<span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>(1-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(2-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(3-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>) + <span class="docEmphasis">m<sub>X(i)</sub></span> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+<span class="docEmphasis">S</span><sub>2</sub>(<span class="docEmphasis">i</span><img src="U2227.GIF" border="0" />3)</p></td></tr></table></p><br />
+<p class="docText"><a name="iddle1622"></a>where <span class="docEmphasis">X</span>(<span class="docEmphasis">i</span>) is the 4-bit number formed by exchanging the low order and high order pairs of bits in the 4-bit number <span class="docEmphasis">i</span> (so <span class="docEmphasis">X</span>(<span class="docEmphasis">i</span>) = 4<span class="docEmphasis">i</span> - 15 <sub><img src="U230A.GIF" border="0" /></sub><span class="docEmphasis">i</span>/4<sub><img src="U230B.GIF" border="0" /></sub>), and <span class="docEmphasis">S</span><sub>2</sub>(0) = 3, <span class="docEmphasis">S</span><sub>2</sub>(1) = 5, <span class="docEmphasis">S</span><sub>2</sub>(2) = 9, <span class="docEmphasis">S</span><sub>2</sub>(3) = 13, so the 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+s cycle over the values 3, 5, 9, 13. We can write out the first few steps of the pass as follows:</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>0</sub> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>3</sub> = (<span class="docEmphasis">d</span><sub>3</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>) + <span class="docEmphasis">m</span><sub>4</sub> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 5</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>2</sub> = (<span class="docEmphasis">d</span><sub>2</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>) + <span class="docEmphasis">m</span><sub>8</sub> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 9</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>1</sub> = (<span class="docEmphasis">d</span><sub>1</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>) + <span class="docEmphasis">m</span><sub>12</sub> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 13</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">G</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>1</sub> + 5a827999<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr></table></p><br />
+<a name="ch05lev2sec12"></a>
+<h4 id="title-IDALRXSB" class="docSection2Title">5.4.5. MD4 Message Digest Pass 3</h4>
+<p class="docText">A function <span class="docEmphasis">H</span>(<span class="docEmphasis">x</span>,<span class="docEmphasis">y</span>,<span class="docEmphasis">z</span>) is defined as <span class="docEmphasis">x</span><img src="U2295.GIF" border="0" /><span class="docEmphasis">y</span><img src="U2295.GIF" border="0" /><span class="docEmphasis">z</span>. Pass 3 has a different strange constant based on the square root of 3. The constant is 
+
+<img border="0" alt="" width="125" height="17" src="136equ03.jpg" />
+
+
+.</p>
+<p class="docText">A separate step is done for each of the 16 words of the message. For each integer <span class="docEmphasis">i</span> from 0 through 15,</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> = (<span class="docEmphasis">d</span><sub>(-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub> + <span class="docEmphasis">H(d</span><sub>(1-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(2-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3</sub>, <span class="docEmphasis">d</span><sub>(3-<span class="docEmphasis">i</span>)<img src="U2227.GIF" border="0" />3)</sub> + <span class="docEmphasis">m<sub>R(i)</sub></span> + 6ed9eba1<sub>16</sub>
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+<span class="docEmphasis">S</span><sub>3</sub>(<span class="docEmphasis">i</span><img src="U2227.GIF" border="0" />3)</p></td></tr></table></p><br />
+<p class="docText">where <span class="docEmphasis">R</span>(<span class="docEmphasis">i</span>) is the 4-bit number formed by reversing the order of the bits in the 4-bit number <span class="docEmphasis">i</span> (so <span class="docEmphasis">R</span>(<span class="docEmphasis">i</span>) = 8<span class="docEmphasis">i</span> - 12 <sub><img src="U230A.GIF" border="0" /></sub><span class="docEmphasis">i</span>/2<sub><img src="U230B.GIF" border="0" /></sub> - 6 <sub><img src="U230A.GIF" border="0" /></sub><span class="docEmphasis">i</span>/4<sub><img src="U230B.GIF" border="0" /></sub> - 3 <sub><img src="U230A.GIF" border="0" /></sub><span class="docEmphasis">i</span>/8<sub><img src="U230B.GIF" border="0" /></sub>), and <span class="docEmphasis">S</span><sub>3</sub>(0) = 3, <span class="docEmphasis">S</span><sub>3</sub>(1) = 9, <span class="docEmphasis">S</span><sub>3</sub>(2) = 11, <span class="docEmphasis">S</span><sub>3</sub>(3) = 15, so the 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+s cycle over the values 3, 9, 11, 15. We can write out the first few steps of the pass as follows:</p>
+<p><table cellspacing="0" frame="void" rules="none" cellpadding="5"><colgroup align="left" span="1"><col width="550"></col></colgroup><thead></thead><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">H</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>0</sub> + 6ed9eba1<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>3</sub> = (<span class="docEmphasis">d</span><sub>3</sub> + <span class="docEmphasis">H</span>(<span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>) + <span class="docEmphasis">m</span><sub>8</sub> + 6ed9eba1<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 9</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>2</sub> = (<span class="docEmphasis">d</span><sub>2</sub> + <span class="docEmphasis">H</span>(<span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>, <span class="docEmphasis">d</span><sub>1</sub>) + <span class="docEmphasis">m</span><sub>4</sub> + 6ed9eba1<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 11</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>1</sub> = (<span class="docEmphasis">d</span><sub>1</sub> + <span class="docEmphasis">H</span>(<span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>, <span class="docEmphasis">d</span><sub>0</sub>) + <span class="docEmphasis">m</span><sub>12</sub> + 6ed9eba1<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 15</p></td></tr><tr><td class="docTableCell" align="left" valign="top"><p class="docText"><span class="docEmphasis">d</span><sub>0</sub> = (<span class="docEmphasis">d</span><sub>0</sub> + <span class="docEmphasis">H</span>(<span class="docEmphasis">d</span><sub>1</sub>, <span class="docEmphasis">d</span><sub>2</sub>, <span class="docEmphasis">d</span><sub>3</sub>) + <span class="docEmphasis">m</span><sub>2</sub> + 6ed9eba1<sub>16</sub>) 
+
+<img border="0" alt="" width="10" height="11" src="136equ06.jpg" />
+
+
+ 3</p></td></tr></table></p><br />
+<a href="15051538.html"><img src="pixel.gif" alt="" width="1" height="1" border="0" /></a><ul></ul></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="middle" class="v2" height="5"><img src="pixel.gif" width="1" height="5" alt="" border="0" /></td></tr><tr><td valign="middle" class="v2"><table cellpadding="0" cellspacing="0" border="0" width="100%"><tr><td align="left"><span style="white-space:nowrap">&nbsp;</span>
+                  &nbsp;
+                  <span style="white-space:nowrap"> &nbsp;&nbsp;</span>
+            &nbsp;<span style="white-space:nowrap">&nbsp;</span></td></tr></table></td><td></td><td valign="middle" class="v2" align="right"> 
+          &nbsp;
+          <span style="white-space:nowrap"><a target="_self" href="ch05lev1sec3.html" title="Previous section"><img border="0" align="absmiddle" src="btn_prev.gif" alt="Previous section" id="btn_prev" /></a></span>
+				
+				&nbsp;
+				
+				<span style="white-space:nowrap"><a target="_self" href="ch05lev1sec5.html" title="Next section"><img border="0" align="absmiddle" src="btn_next.gif" alt="Next section" id="btn_next" /></a></span></td></tr></table><table width="100%" border="0" cellspacing="0" cellpadding="2"><tr><td valign="top" align="right"><span style="white-space:nowrap"><a target="_self" href="#toppage" title="Top"></a></span></td></tr></table></div><!--IP User 2--></td></tr></table></td></body></head></html>
