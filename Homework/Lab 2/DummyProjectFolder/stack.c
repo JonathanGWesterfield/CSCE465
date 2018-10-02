@@ -6,7 +6,7 @@
 
 int bof(char *str)
 {
-    char buffer[24];
+    char buffer[12];
 
     /* The following statement has a buffer overflow problem */
     strcpy(buffer, str);
