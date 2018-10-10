@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="199ecc99-c61c-4c30-b206-9109da96dc0f" name="SEED VM" url="http://192.168.1.14">
+        <fileTransfer host="192.168.1.14" port="22" rootFolder="/home/seed/Desktop" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="65eb78ee-22b3-4877-acae-79c7b11093f6" name="RPI" url="http://192.168.1.5">
+        <fileTransfer host="192.168.1.5" port="22" rootFolder="/home/pi/Desktop" accessType="SFTP">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" shareSSLContext="true" />
+          </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
