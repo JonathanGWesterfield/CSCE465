@@ -1,0 +1,1 @@
+HMAC-MD5(plaintext.txt)= caecda00024203a0dcbca755d7c6f0ad

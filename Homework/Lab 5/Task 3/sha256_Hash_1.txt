@@ -1,0 +1,1 @@
+HMAC-SHA256(plaintext.txt)= 3d6764570752f503acdeb98763fff37f4fddee8fb0674c517ea4a090c5e0a99a
