@@ -1,0 +1,1 @@
+HMAC-MD5(plaintext Mod.txt)= 8f8e988a9ce677497aceae32b45dc7ca

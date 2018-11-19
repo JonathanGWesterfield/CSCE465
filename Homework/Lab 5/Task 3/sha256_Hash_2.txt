@@ -1,0 +1,1 @@
+HMAC-SHA256(plaintext Mod.txt)= ad83137fdf06055c89cfc556ea9f934e9735067ceccf1bb62fbcc9529198110c
