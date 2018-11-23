@@ -9,11 +9,7 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="82811711-89de-4ba1-9034-d1c607ce764f" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypt" beforeDir="false" afterPath="$PROJECT_DIR$/crypt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/crypt.c" beforeDir="false" afterPath="$PROJECT_DIR$/crypt.c" afterDir="false" />
-    </list>
+    <list default="true" id="82811711-89de-4ba1-9034-d1c607ce764f" name="Default Changelist" comment="" />
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -26,7 +22,7 @@
     <session id="-855901493">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="2" />
+          <entry key="project.closed" value="3" />
           <entry key="project.open.time.4" value="1" />
           <entry key="project.open.time.6" value="2" />
           <entry key="project.opened" value="3" />
@@ -234,16 +230,15 @@
       <workItem from="1542596453409" duration="2067000" />
       <workItem from="1542740493592" duration="6882000" />
       <workItem from="1542916034086" duration="3247000" />
-      <workItem from="1542942916534" duration="4175000" />
+      <workItem from="1542942916534" duration="4999000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="16371000" />
+    <option name="totallyTimeSpent" value="17195000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="906" y="22" width="1013" height="1057" extended-state="0" />
-    <editor active="true" />
     <layout>
       <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18125644" />
       <window_info id="Structure" order="1" weight="0.25" />
