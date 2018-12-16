@@ -1,20 +1,20 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include <openssl/evp.h>
 #include <string.h>
 #include <time.h>
+#include <stdbool.h>
+
+// gets the size of an array
 #define NELEMS(x)  (sizeof(x) / sizeof((x)[0]))
-
-
 
 EVP_MD_CTX *mdctx;
 const EVP_MD *md;
-char mess1[] = "Test Message\n";
-char mess2[] = "Hello World\n";
 unsigned char md_value[EVP_MAX_MD_SIZE];
 int MAX_SIZE = (int)(65535 / sizeof(int));
 
 // pastHashes[NUMBER_OF_STRINGS][STRING_LENGTH+1];
-char pastHashes[100][6];
+unsigned char pastHashes[100][6];
 int hashIndex = 0;
 
 /**
@@ -40,35 +40,107 @@ char *randstring(size_t length)
             randomString[length] = '\0';
         }
     }
+    // printf("Random Mess1: %s\n", randomString);
     return randomString;
 }
 
 /**
- * @brief Get the first 6 chars (24 bits) of the hash
- * @param md_arr
+ * Iterates through the array of stored hashes and compares each element
+ * to the subHash that is passed in.
+ * @param subHash
  * @return
  */
-char* getSubStr(unsigned char md_arr[EVP_MAX_MD_SIZE])
+bool compareHash(unsigned char* subHash[6])
 {
-    char subbuff[8];
-    memcpy(subbuff, &md_arr[0], 6);
-    subbuff[7] = '\0';
+    printf("Comp hash: ");
+    for(int i = 0; i < 6; i++)
+        printf("%x ", subHash[i]);
+    printf("\n");
 
-    return subbuff;
-}
-
-void storeHash(char subHash)
-{
-    /* for(int i = 0; i < 6; i++)
+    for(int i; i <= hashIndex; i++)
     {
-        pastHashes[hashIndex][i] = subHash[i];
-    } */
+        // Compare our new hash to every single hash in O(n) fashion
+        if(strncmp(subHash, pastHashes[i], 6) == 0)
+        {
+            printf("Hash Match Found!!!\n");
+            printf("Found after %d tries!\n", (hashIndex + 1));
+            return true;
+        }
+    }
 
-    hashIndex++;
+    return false;
 }
 
-// 24 bits is the first 6 characters
-void mesDigest()
+/**
+ * Generates a hash based on a randomized string passed in and a known, default string.
+ * Then compares it to previous hashes that were generated from a different set of
+ * strings and stores the hash if it didn't match.
+ * @param mess1
+ * @param mess2
+ * @return
+ */
+bool knownMesDigest(char mess1[])
+{
+    // Mess 2 length = 13
+    char mess2[] = "Known Message";
+    int md_len;
+
+    mdctx = EVP_MD_CTX_create();
+    EVP_DigestInit_ex(mdctx, md, NULL);
+    EVP_DigestUpdate(mdctx, mess1, strlen(mess1));
+    EVP_DigestUpdate(mdctx, mess2, strlen(mess2));
+    EVP_DigestFinal_ex(mdctx, md_value, &md_len);
+    EVP_MD_CTX_destroy(mdctx);
+
+    /* printf("Digest is: ");
+    for(int i = 0; i < md_len; i++)
+        printf("%x ", md_value[i]);
+    printf("\n"); */
+
+    // 24 bits is the first 6 characters
+
+    char* subHash[6];
+    for(int i = 0; i < 6; i++)
+        subHash[i] = md_value[i];
+
+    printf("Sub hash: ");
+    for(int i = 0; i < 6; i++)
+        printf("%x ", subHash[i]);
+    printf("\n");
+
+    if(compareHash(subHash) == true)
+    {
+        printf("\nMessages that matched: \n");
+        printf("%s\n", mess1);
+        printf("%s\n", mess2);
+        return true;
+    }
+
+
+    // store this new hash in our hash array
+    strncpy(pastHashes[hashIndex], md_value, 6);
+
+    printf("Stored Hash: ");
+    for (int i = 0; i < 6; i++)
+        printf("%x ", pastHashes[hashIndex][i]);
+    printf("\n");
+
+    // Increment our hash array
+    hashIndex++;
+
+    printf("Not found yet\n\n");
+    return false;
+}
+
+/**
+ * Generates a hash based on the randomized strings passed in. Then compares it to
+ * previous hashes that were generated from a different set of random strings and stores
+ * the hash if it didn't match.
+ * @param mess1
+ * @param mess2
+ * @return
+ */
+bool randMesDigest(char mess1[], char mess2[])
 {
     int md_len;
 
@@ -79,74 +151,86 @@ void mesDigest()
     EVP_DigestFinal_ex(mdctx, md_value, &md_len);
     EVP_MD_CTX_destroy(mdctx);
 
-    printf("Digest is: ");
+    /* printf("Digest is: ");
     for(int i = 0; i < md_len; i++)
         printf("%x ", md_value[i]);
-    printf("\n");
+    printf("\n"); */
+
+    // 24 bits is the first 6 characters
 
     char* subHash[6];
     for(int i = 0; i < 6; i++)
-    {
         subHash[i] = md_value[i];
-    }
-    /* for(int i = 0; i < 6; i++)
-    {
-        pastHashes[hashIndex][i] = md_value[i];
-    } */
 
     printf("Sub hash: ");
     for(int i = 0; i < 6; i++)
         printf("%x ", subHash[i]);
     printf("\n");
 
-    printf("size of subhash: %d\n", NELEMS(subHash));
+    if(compareHash(subHash) == true)
+    {
+        printf("\nMessages that matched: \n");
+        printf("%s\n", mess1);
+        printf("%s\n", mess2);
+        return true;
+    }
 
 
+    // store this new hash in our hash array
+    strncpy(pastHashes[hashIndex], md_value, 6);
+
+    printf("Stored Hash: ");
+    for (int i = 0; i < 6; i++)
+        printf("%x ", pastHashes[hashIndex][i]);
+    printf("\n");
+
+    // Increment our hash array
+    hashIndex++;
+
+    printf("Not found yet\n\n");
+    return false;
 }
 
+/** Generates a pair of randomized strings and then calls the mesDigest() function
+ * to see if it can find a pair of randomized strings that generates the same
+ * hash as a different pair.X
+ * @param argc
+ * @param argv
+ * @return
+ */
 main(int argc, char *argv[])
 {
     OpenSSL_add_all_digests();
 
-    if(!argv[1]) {
-        printf("Usage: ./crypt digestname\n");
+    if(!argv[1] || !argv[2]) {
+        printf("Usage: ./crypt digestname messageLength\n");
         exit(1);
     }
 
     md = EVP_get_digestbyname(argv[1]);
+    int messLength = atoi(argv[2]);
 
     if(!md) {
         printf("Unknown message digest %s\n", argv[1]);
         exit(1);
     }
 
-    char* randomString = randstring(12);
-
-    mesDigest();
-
-    printf("Past Hashes: ");
-    for(int i = 0; i < 1; i++) // i < NELEMS(pastHashes); i++)
+    bool hashMatched = false;
+    while(!hashMatched)
     {
-        for(int j = 0; j < 6; j++)
+        if (messLength == 0)
         {
-            printf("%x ", pastHashes[i][j]);
+            // length is set to 13 because that is the length of the known message
+            hashMatched = knownMesDigest(randstring(22));
+            printf("Message Length: 13\n");
         }
-        printf("\n");
+        else
+        {
+            hashMatched = randMesDigest(randstring(messLength), randstring(messLength));
+            printf("Message Length: %d\n", messLength);
+        }
     }
 
-    /* int md_len;
-
-    mdctx = EVP_MD_CTX_create();
-    EVP_DigestInit_ex(mdctx, md, NULL);
-    EVP_DigestUpdate(mdctx, mess1, strlen(mess1));
-    EVP_DigestUpdate(mdctx, mess2, strlen(mess2));
-    EVP_DigestFinal_ex(mdctx, md_value, &md_len);
-    EVP_MD_CTX_destroy(mdctx);
-
-    printf("Digest is: ");
-    for(int i = 0; i < md_len; i++)
-        printf("%02x", md_value[i]);
-    printf("\n"); */
 
     /* Call this once before exit. */
     EVP_cleanup();
